@@ -27,3 +27,47 @@ df = df[['Team1']]      #keep only "Team1"
 df.head()
 
 k
+
+todos = json.loads(r.text)
+counter = 0
+
+Game = {}
+Date = {}
+Hometeam = {}
+Awayteam = {}
+GoalsHome = {}
+GoalsAway = {}
+
+for game in todos:
+    Game[counter] = game
+    #games.append(game)
+    for team in Game[counter]:
+        #Safe the date
+        Date[counter] = Game[counter]['MatchDateTime']
+        #Safe Teamnames, by going through the lost
+        Team1 = Game[counter]['Team1']
+        Hometeam[counter] = Team1['TeamName']
+        Team2 = Game[counter]['Team2']
+        Awayteam[counter] = Team2['TeamName']
+        #Safe scored goals by team, by going through the lost
+        Matchresults = Game[counter]['MatchResults']
+        Result = Matchresults[0]
+        GoalsHome[counter] = Result['PointsTeam1']
+        GoalsAway[counter] = Result['PointsTeam2']
+        
+    counter +=1
+    
+print(Date[0])
+print(Hometeam[0])
+print(Awayteam[0])
+print(GoalsHome[0])
+print(GoalsAway[0])
+    #counter += 1
+    #print(counter)
+print(Game1['MatchID'])
+
+
+
+#Game1 = todos[1]  #safe Game one from list
+#Game1['MatchID']  #get GameID from that game
+

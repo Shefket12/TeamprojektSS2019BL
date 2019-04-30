@@ -38,18 +38,22 @@ Awayteam = {}
 GoalsHome = {}
 GoalsAway = {}
 
+
+## The todos has different tuples Like: [Team1:'Name','TeamID', 'ShortName']
+# To get different values we save the lists in different vars and then go through the lists in the steps after that with
+# 'countable'-variables
 for game in todos:
     Game[counter] = game
     #games.append(game)
     for team in Game[counter]:
         #Safe the date
         Date[counter] = Game[counter]['MatchDateTime']
-        #Safe Teamnames, by going through the lost
+        #Safe Teamnames, by going through the list
         Team1 = Game[counter]['Team1']
         Hometeam[counter] = Team1['TeamName']
         Team2 = Game[counter]['Team2']
         Awayteam[counter] = Team2['TeamName']
-        #Safe scored goals by team, by going through the lost
+        #Safe scored goals by team, by going through the list
         Matchresults = Game[counter]['MatchResults']
         Result = Matchresults[0]
         GoalsHome[counter] = Result['PointsTeam1']

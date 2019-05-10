@@ -69,7 +69,7 @@ for game in todos:
         GoalsHome[counter] = Result['PointsTeam1']
         GoalsAway[counter] = Result['PointsTeam2']
         
-    #to understand what is done here, look at the comments above
+    #to understand what is done here, look at the comments above @ the csv file
     #the empty string is put in, so that there can be differenciated between Home- and Awayteam
     rowHome = str(Hometeam[counter]) + "," + str(GoalsHome[counter]) + "," + ","+ str(Date[counter]) +"\n"
     csv.write(rowHome)
@@ -81,15 +81,17 @@ for game in todos:
 
 ######## printing the safed variables
 
-print(Date[5])
-print(Hometeam[5])
-print(Awayteam[5])
-print(GoalsHome[5])
-print(GoalsAway[5])
+#print(Date[5])
+#print(Hometeam[5])
+#print(Awayteam[5])
+#print(GoalsHome[5])
+#print(GoalsAway[5])
     #counter += 1
     #print(counter)
-Game1 = todos[5]
-print(Game1['MatchID'])
+Game1 = Game[1]
+Matchresults = Game[1]['MatchResults']
+Result = Matchresults[0]
+print(Matchresults)
 
 
 
@@ -99,19 +101,107 @@ print(Game1['MatchID'])
 
 ######## Algorithm to get the demanded values  ---> FOR A WHOLE SEASON ---> SEASON 18/19
 
-h = requests.get('http://www.openligadb.de/api/getmatchdata/bl1/2018/')
+h = requests.get('http://www.openligadb.de/api/getmatchdata/bl1/2017/')
 g = h.json() 
-todos2 = json.loads(h.text)
+Buli = json.loads(h.text)
 #todos2
 
-counter2 = 0
-Game2 = {}
+count = 0
+Match = {}
+Date = {}
+Hometeam = {}
+Awayteam = {}
+GoalsHome = {}
+GoalsAway = {}
 
 
-#Game2 has "just" 306 Games (from 0-305) safed, becaus a Matchday has 9 Games and there are 34 of them ->9*34==306
-for game in todos2:
+#Match has "just" 306 Games (from 0-305) safed, becaus a Matchday has 9 Games and there are 34 of them ->9*34==306
+for game in Buli:
 	#Safes the single games in an agile variable
-    Game2[counter2] = game
-    counter2 +=1
+    Match[count] = game
+    #for team in Match[count]:
+    #games.append(game)
+    for team in Match[count]:
+        #Safe the date
+        Date[count] = Match[count]['MatchDateTime']
+        
+        #Safe Teamnames, by going through the list
+        Team1 = Match[count]['Team1']
+        Hometeam[count] = Team1['TeamName']
+        Team2 = Match[count]['Team2']
+        Awayteam[count] = Team2['TeamName']
+        
+        #Safe scored goals by team, by going through the list
+        Matchresults = Match[count]['MatchResults']
+        Result = Matchresults[1]
+        GoalsHome[count] = Result['PointsTeam1']
+        GoalsAway[count] = Result['PointsTeam2']
+           
+    count +=1
+
     
-#print(Game2[305])
+
+
+#print(GoalsHome[0])
+
+
+#print(Match[305])
+
+# switch case, to get a team for a given value
+def GetTeamName(argument):
+    switcher = {
+        1: "FC Bayern",
+        2: "Bayer Leverkusen",
+        3: "TSG 1899 Hoffenheim",
+        4: "Werder Bremen",
+        5: "Hertha BSC",
+        6: "VfB Stuttgart",
+        7: "Hamburger SV",
+        8: "FC Augsburg",
+        9: "1. FSV Mainz 05",
+        10: "Hannover 96",
+        11: "VfL Wolfsburg",
+        12: "Borussia Dortmund",
+        13: "FC Schalke 04",
+        14: "RB Leipzig",
+        15: "SC Freiburg",
+        16: "Eintracht Frankfurt",
+        17: "Borussia Mönchengladbach",
+        18: "1. FC Köln"
+    }
+    print(switcher.get(argument, "Invalid month"))
+    
+    
+# compare a given teamname(String) to a given integer, second string will safed in var through the method 'GetTeamName'
+def CompareTeamNames(TeamName, integer):
+    name = GetTeamName(i)
+    Teamname = TeamName
+    return Teamnname == name
+
+counter1 = 0
+counter2 = 0
+Team = {}
+matches = 0
+NumberOfTeams = 18
+
+
+# going through all hometeams in the whole season
+for teams in Hometeam[matches]:
+    i = 1
+    #going through all 18 Clubs
+    while i <= NumberOfTeams:
+        # compare if current Club is the same as the current Hometeam
+        # if so: Increase the hometeams whole seasonscore by the current score
+        if(CompareTeamNames(Hometeam[matches], i)):
+            CurrentTeam = GetTeamName(i)
+            Team[CurrentTeam] += Hometeam[matches]
+            #print("hello")
+            counter1 +=1
+        else:
+            i += 1
+    #print("TEST")
+    counter2 +=1
+        
+
+#print(countttt)
+

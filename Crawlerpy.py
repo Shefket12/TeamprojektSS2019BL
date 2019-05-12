@@ -169,14 +169,15 @@ def GetTeamName(argument):
         17: "Borussia Mönchengladbach",
         18: "1. FC Köln"
     }
-    print(switcher.get(argument, "Invalid month"))
+    print(switcher.get(argument, "Invalid Team"))
     
     
 # compare a given teamname(String) to a given integer, second string will safed in var through the method 'GetTeamName'
-def CompareTeamNames(TeamName, integer):
-    name = GetTeamName(i)
+def CompareTeamNames(TeamName, number):
+    name = GetTeamName(number)
     Teamname = TeamName
-    return Teamnname == name
+    value = Teamname == name 
+    return value
 
 counter1 = 0
 counter2 = 0
@@ -188,20 +189,23 @@ NumberOfTeams = 18
 # going through all hometeams in the whole season
 for teams in Hometeam[matches]:
     i = 1
+    #print("hello13423t")
     #going through all 18 Clubs
     while i <= NumberOfTeams:
         # compare if current Club is the same as the current Hometeam
         # if so: Increase the hometeams whole seasonscore by the current score
         if(CompareTeamNames(Hometeam[matches], i)):
+            print("GOODBYE")
             CurrentTeam = GetTeamName(i)
-            Team[CurrentTeam] += Hometeam[matches]
-            #print("hello")
+            Team["CurrentTeam"] += Hometeam[matches]
+            
             counter1 +=1
+            i += 1
         else:
             i += 1
-    #print("TEST")
+            #print("hello")
+    print("TEST")
     counter2 +=1
-        
+
 
 #print(countttt)
-

@@ -22,7 +22,9 @@ download_dir = "C:\\Users\\Shefket\\Documents\\Uni\\SS19\\Teamprojekt\\BuliDaten
 csv = open(download_dir, "w") 
 #"w" indicates that you're writing strings to the file
 
-columnTitleRow = "Team,GoalsScoredHome,GoalsScoredAway,DateOfGame\n"
+Matchday = "Matchday30" + "," + "," + "," + "," + "\n"
+csv.write(Matchday)
+columnTitleRow = "DateOfGame,HomeTeam,AwayTeam,GoalsScoredHome,GoalsScoredAway\n"
 csv.write(columnTitleRow)
 
 #for key in dic.keys():
@@ -71,12 +73,12 @@ for game in todos:
         
     #to understand what is done here, look at the comments above @ the csv file
     #the empty string is put in, so that there can be differenciated between Home- and Awayteam
-    rowHome = str(Hometeam[counter]) + "," + str(GoalsHome[counter]) + "," + ","+ str(Date[counter]) +"\n"
-    csv.write(rowHome)
-    rowAway = str(Awayteam[counter]) + "," + "," + str(GoalsAway[counter]) + "\n"
-    csv.write(rowAway)
+    rowGame = str(Date[counter]) + "," + str(Hometeam[counter]) + "," + str(Awayteam[counter]) + "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
+    csv.write(rowGame)
         
     counter +=1
+    
+
     
 
 ######## printing the safed variables

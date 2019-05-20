@@ -24,7 +24,11 @@ for i in range(1,35):
 #k = r.json()            #safe as JSON
 #k #to print the file, to see, how it is built
 
-###writing values in a csv-file
+
+##### writing values in a csv-file ######
+
+
+###Here you can re-write the file, delete the perviously written data and add in the next cell the new data
 
 download_dir = "C:\\Users\\Shefket\\Documents\\Uni\\SS19\\Teamprojekt\\BuliDaten.csv" #where you want the file to be downloaded to 
 #remember to change the file, to a valid path on your computer!!
@@ -33,11 +37,6 @@ csv = open(download_dir, "w")
 #"w" indicates that you're writing strings to the file
 #this also erases the pervious written data
 
-#Mday = "Matchday30" + "," + "," + "," + "," + "\n"
-#csv.write(Mday)
-#columnTitleRow = "DateOfGame,HomeTeam,AwayTeam,GoalsScoredHome,GoalsScoredAway\n"
-#csv.write(columnTitleRow)
-
 
 ###how to safe and write the wanted things into the csv
 #for key in dic.keys():
@@ -45,9 +44,16 @@ csv = open(download_dir, "w")
 #	email = dic[key]       #safe the value at this point in this var
 #	row = name + "," + email + "\n"  #safe the variables in this var
 #	csv.write(row)         #write the used values into the csv file
-
+	
+	
+####### Testing, if crawling worked and was safed in the right way
 #k = Matchday[34].json()
 #k
+
+
+
+##### Algorithm to go through every matchday and write the data into the csv-file ######
+
 
 #the following are iterable variables, i.e.: Hometeam[1] != Hometeam[2] -> thats also the way, you call a variable
 counter = 0
@@ -61,6 +67,11 @@ GoalsAway = {}
 for i in range(1, 35):
     #todos is a local variable, that safes the current matchday
     todos = json.loads(Matchday[i].text)
+    #to write the current matchday and in the next cell the given names for the rows into the csv-file
+    Mday = f"Matchday{i}" + "," + "," + "," + "," + "\n"
+    csv.write(Mday)
+    columnTitleRow = "DateOfGame,HomeTeam,AwayTeam,GoalsScoredHome,GoalsScoredAway\n"
+    csv.write(columnTitleRow)
     # The todos has different tuples Like: [Team1:{'Name':"...",'TeamID':"...", 'ShortName':"..."}]
     # To get different values we save the lists in different vars and then go through the lists in the steps after that with
     # 'countable'-variables
@@ -89,26 +100,5 @@ for i in range(1, 35):
         csv.write(rowGame)
         
         counter += 1
-	
         
-######## printing the safed variables
-
-#print(Date[5])
-#print(Hometeam[5])
-#print(Awayteam[5])
-#print(GoalsHome[5])
-#print(GoalsAway[5])
-    #counter += 1
-    #print(counter)
-Game1 = Game[1]
-Matchresults = Game[1]['MatchResults']
-Result = Matchresults[0]
-todos
-
-
-
-#Game1 = todos[1]  #safe Game one from lists
-#Game1['MatchID']  #get GameID from that game
-	#--> These two lines show in an example what the loop above is doing
-	
 	

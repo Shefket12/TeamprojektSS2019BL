@@ -69,8 +69,7 @@ def writeGamesInFile():
 
     csv = open(download_dir, "w") 
     #"w" indicates that you're writing strings to the file
-    #this also erases the pervious written data   
-    #csv.close()
+    #this also erases the pervious written data
     
     
     #the following are iterable variables, i.e.: Hometeam[1] != Hometeam[2] -> thats also the way, you call a variable

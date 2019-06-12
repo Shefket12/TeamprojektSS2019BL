@@ -84,11 +84,14 @@ def writeGamesInFile():
     for i in range(1, 35):
         #todos is a local variable, that safes the current matchday
         todos = json.loads(Matchday[i].text)
+	
         #to write the current matchday and in the next cell the given names for the rows into the csv-file
-        Mday = f"Matchday{i}" + "," + "," + "," + "," + "\n"
-        csv.write(Mday)
-        columnTitleRow = "DateOfGame,HomeTeam,AwayTeam,GoalsScoredHome,GoalsScoredAway\n"
-        csv.write(columnTitleRow)
+	#this part is only for clarity reasons, if one wants to take a look at the data
+        #Mday = f"Matchday{i}" + "," + "," + "," + "," + "\n"
+        #csv.write(Mday)
+        #columnTitleRow = "DateOfGame,HomeTeam,AwayTeam,GoalsScoredHome,GoalsScoredAway\n"
+        #csv.write(columnTitleRow)
+	
         # The todos has different tuples Like: [Team1:{'Name':"...",'TeamID':"...", 'ShortName':"..."}]
         # To get different values we save the lists in different vars and then go through the lists in the steps after that with
         # 'countable'-variables

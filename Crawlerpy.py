@@ -1,9 +1,6 @@
 import requests
-import pandas as pd
 import json
-import time
 import csv
-from pandas.io.json import json_normalize
 
 
 class DataCrawler:

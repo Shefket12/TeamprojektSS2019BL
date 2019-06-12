@@ -28,6 +28,8 @@ class DataCrawler:
         Date = {}
         Hometeam = {}
         Awayteam = {}
+    	HTID = {}
+    	ATID = {}
         GoalsHome = {}
         GoalsAway = {}
 
@@ -52,11 +54,14 @@ class DataCrawler:
                 #Safe the date
                     Date[counter] = Game[counter]['MatchDateTime']
     
-                #Safe Teamnames, by going through the list
+                #Safe Teamnames and TeamIDs, by going through the list
                     Team1 = Game[counter]['Team1']
-                    Hometeam[counter] = Team1['TeamName']
+                    HomeTeam[counter] = Team1['TeamName']
+                    HTID[counter] = Team1['TeamId']
+                
                     Team2 = Game[counter]['Team2']
-                    Awayteam[counter] = Team2['TeamName']
+                    AwayTeam[counter] = Team2['TeamName']
+                    ATID[counter] = Team2['TeamId']
 
                 #Safe scored goals by team, by going through the list
                     Matchresults = Game[counter]['MatchResults']
@@ -66,7 +71,7 @@ class DataCrawler:
 
             #to understand what is done here, look at the comments above @ the csv file
             #the empty string is put in, so that there can be differenciated between Home- and Awayteam    
-                rowGame = str(Date[counter]) + "," + str(Hometeam[counter]) + "," + str(Awayteam[counter]) + "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
+                rowGame = Date[counter] + "," + str(HTID[counter]) + "," + HomeTeam[counter] + "," +  str(ATID[counter]) + "," + AwayTeam[counter] + "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
                 csv.write(rowGame)
 
                 counter += 1

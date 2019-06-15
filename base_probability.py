@@ -20,23 +20,41 @@ def get_probability_hometeam_wins(matches, home_team, external_team):
     if(len(relevant_matches) == 0):
         return 0.5
     else:
-        sum_goals_hometeam = 0
-        sum_goals_external_team = 0
+        home_team_wins = 0
+        external_team_wins = 0
+        draw_teams = 0
 
         #sum up all goals over all matches which are considered, for home team and external team
         for match in relevant_matches:
-            sum_goals_external_team = sum_goals_external_team + match.external_score
-            sum_goals_hometeam = sum_goals_hometeam + match.home_score
+            if match.external_score < match.home_score:
+                home_team_wins = home_team_wins + 1
+            elif match.external_score > match.home_score:
+                external_team_wins = external_team_wins + 1
+            else:
+                draw_teams = draw_teams + 1
 
-        #goal balance identical -> 50% chance to win
-        if(sum_goals_external_team == sum_goals_hometeam):
-            return 0.5
-
-        else:
-            return sum_goals_hometeam * 1.0 / (sum_goals_hometeam + sum_goals_external_team)
+        return home_team_wins * 1.0 / (home_team_wins + external_team_wins + draw_teams)
 
 #calulates the probability for the external team to win : = 1 - get_probability_hometeam_wins
 def get_probability_external_team_wins(matches, home_team, external_team):
-    return 1.0 - get_probability_hometeam_wins(matches, home_team, external_team)
+    # get only the relevant matches, where home_team and external_team played
+    relevant_matches = __find_relevant_matches(matches, home_team, external_team)
 
+    # no match found -> result will be 50% probability since no played match exist to make a better prediction
+    if (len(relevant_matches) == 0):
+        return 0.5
+    else:
+        home_team_wins = 0
+        external_team_wins = 0
+        draw_teams = 0
 
+        # sum up all goals over all matches which are considered, for home team and external team
+        for match in relevant_matches:
+            if match.external_score < match.home_score:
+                home_team_wins = home_team_wins + 1
+            elif match.external_score > match.home_score:
+                external_team_wins = external_team_wins + 1
+            else:
+                draw_teams = draw_teams + 1
+
+        return external_team_wins * 1.0 / (home_team_wins + external_team_wins + draw_teams)

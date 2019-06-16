@@ -11,7 +11,7 @@ from parse_csv_data import parse
 from base_probability import*
 
 class Algorithm:
-    def __init__(self):
+        def __init__(self):
         self.matches = []
     
     
@@ -29,8 +29,8 @@ class Algorithm:
         if(self.matches == []):
             sys.stderr.write("No matches given to caluculate")
         else:
-            probabilitys = [get_probability_hometeam_wins(self.matches, HomeTeam, GuestTeam), get_probability_external_team_wins(self.matches, HomeTeam, GuestTeam)]
-            return probabilitys
+            probabilities = [get_probability_hometeam_wins(self.matches, HomeTeam, GuestTeam), get_probability_external_team_wins(self.matches, HomeTeam, GuestTeam)]
+            return probabilities
     
 
 

@@ -1,20 +1,38 @@
 import requests
 import json
 import csv
-
+try:
+    import httplib
+except:
+    import http.client as httplib
 
 class DataCrawler:
 
     def __init__(self, csvPath):
         self.Matchdays = []
         self.csvPath = csvPath
+	
+    #method, to check the internet-connection, returning True and False as resulst
+    #only the HEAD and no HTML will be fetched
+    def internet_on(self):
+        conn = httplib.HTTPConnection("www.ecosia.com", timeout=5)
+        try:
+            conn.request("HEAD", "/")
+            conn.close()
+            return True
+        except:
+            conn.close()
+            return False
         
     def clear_Matchdays(self):
         self.Matchdays = []
         
     def add_Season(self, SeasonYear, FirstMatchday, LastMatchday):
-        for i in range(FirstMatchday, LastMatchday):
-            self.Matchdays.append(requests.get(f'http://www.openligadb.de/api/getmatchdata/bl1/{SeasonYear}//{i}'))
+        if(self.internet_on() == False):
+            raise Exception('You should check your internet connection, before you proceed')
+        else:
+            for i in range(FirstMatchday, LastMatchday):
+                self.Matchdays.append(requests.get(f'http://www.openligadb.de/api/getmatchdata/bl1/{SeasonYear}//{i}'))
         
     def write_CSVFile(self):
         csv = open(self.csvPath, "w") 

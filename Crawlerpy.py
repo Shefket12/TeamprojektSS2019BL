@@ -44,7 +44,11 @@ class DataCrawler:
     	HTID = {}
     	ATID = {}
         GoalsHome = {}
+	GoalsHome1 = 0
+	GoalsHome2 = 0
         GoalsAway = {}
+	GoalsAway1 = 0
+	GoalsAway2 = 0
 
         for days in self.Matchdays:
         #todos is a local variable, that safes the current matchday
@@ -75,10 +79,24 @@ class DataCrawler:
                     ATID[counter] = Team2['TeamId']
 
                 #Safe scored goals by team, by going through the list
+                #check, if the finalscore is in Matchresults[0] or Matchresults[1]
                     Matchresults = Game[counter]['MatchResults']
+
                     Result = Matchresults[0]
-                    GoalsHome[counter] = Result['PointsTeam1']
-                    GoalsAway[counter] = Result['PointsTeam2']
+                    GoalsHome1 = Result['PointsTeam1']
+                    GoalsAway1 = Result['PointsTeam2']
+
+                    Result = Matchresults[1]
+                    GoalsHome2 = Result['PointsTeam1']
+                    GoalsAway2 = Result['PointsTeam2']
+                    if(GoalsHome1+GoalsAway1 >= GoalsHome2+GoalsAway2):
+                        Result = Matchresults[0]
+                        GoalsHome[counter] = Result['PointsTeam1']
+                        GoalsAway[counter] = Result['PointsTeam2']
+                    elif(GoalsHome2+GoalsAway2 > GoalsHome1+GoalsAway1):
+                        Result = Matchresults[1]
+                        GoalsHome[counter] = Result['PointsTeam1']
+                        GoalsAway[counter] = Result['PointsTeam2']
 
             #to understand what is done here, look at the comments above @ the csv file
             #the empty string is put in, so that there can be differenciated between Home- and Awayteam    

@@ -1,4 +1,4 @@
-from CrawlerpyDaniel import *
+from Crawlerpy import *
 import csv    
 class CrawlerTesting:
         

@@ -76,7 +76,7 @@ class DataCrawler:
 
                 #Safe scored goals by team, by going through the list
                     Matchresults = Game[counter]['MatchResults']
-                    Result = Matchresults[1]
+                    Result = Matchresults[0]
                     GoalsHome[counter] = Result['PointsTeam1']
                     GoalsAway[counter] = Result['PointsTeam2']
 

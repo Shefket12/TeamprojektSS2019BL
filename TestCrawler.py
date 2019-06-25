@@ -7,16 +7,25 @@ class CrawlerTesting:
     Crawler = DataCrawler(filename)
     
     #variables for the matchdays(FirstMatchday, LastMatchday)
+    Season = 2018
     FirstMatchday = 1 
     LastMatchday = 3
     
     #checking, if the internet-connection is working, seperately
-    Crawler.internet_on()
+    def checkInternet(self, Crawler):
+        if(Crawler.internet_on()==True):
+                print("Internet funktionert")
+	else:
+		print("Gerät ist nicht mit dem Internet verbunden")
     
-    #fetching the games and writing the into the CSV-file
-    Crawler.add_Season(2018, FirstMatchday, LastMatchday)
-    #Crawler.add_Season(2017, FirstMatchday, LastMatchday)
-    Crawler.write_CSVFile()
+    #fetching the games and saving them into an array
+    def addSeasonTest(self, Crawler, Season, FirstMatchday, LastMatchday):
+	Crawler.clear_Matchdays()
+	Crawler.add_Season(Season, FirstMatchday, LastMatchday)
+        
+    #writing the fetched games into a CSVFile
+    def writeNewCSVFileTest(self, Crawler):
+        Crawler.write_CSVFile()
     
     #checking the number of games(if all desired games are written in the CSV-file)
     def checkNumOfGames(self, filename, LastMatchday, FirstMatchday):

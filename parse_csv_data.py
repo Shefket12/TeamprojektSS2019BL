@@ -17,8 +17,8 @@ def parse(filename):
         for row in csv_reader:
             #extract the information stored in the csv
             date = date_parser.parse(row[0])
-            home_team = row[1]
-            external_team = row[2]
+            home_team = int(row[1])
+            external_team = int(row[2])
             home_score = int(row[3])
             external_score = int(row[4])
             #create a match object, containing the match information

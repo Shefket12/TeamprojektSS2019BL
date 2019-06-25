@@ -41,8 +41,6 @@ class DataCrawler:
         counter = 0
         Game = {}
         Date = {}
-        Hometeam = {}
-        Awayteam = {}
     	HTID = {}
     	ATID = {}
         GoalsHome = {}
@@ -71,11 +69,9 @@ class DataCrawler:
     
                 #Safe Teamnames and TeamIDs, by going through the list
                     Team1 = Game[counter]['Team1']
-                    HomeTeam[counter] = Team1['TeamName']
                     HTID[counter] = Team1['TeamId']
                 
                     Team2 = Game[counter]['Team2']
-                    AwayTeam[counter] = Team2['TeamName']
                     ATID[counter] = Team2['TeamId']
 
                 #Safe scored goals by team, by going through the list
@@ -86,7 +82,7 @@ class DataCrawler:
 
             #to understand what is done here, look at the comments above @ the csv file
             #the empty string is put in, so that there can be differenciated between Home- and Awayteam    
-                rowGame = Date[counter] + "," + str(HTID[counter]) + "," + HomeTeam[counter] + "," +  str(ATID[counter]) + "," + AwayTeam[counter] + "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
+                rowGame = Date[counter] + "," + str(HTID[counter]) +  "," +  str(ATID[counter]) +  "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
                 csv.write(rowGame)
 
                 counter += 1

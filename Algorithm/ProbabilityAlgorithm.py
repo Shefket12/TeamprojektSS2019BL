@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+
 
 
 # !/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 import sys
-from parse_csv_data import parse
-from base_probability import*
+from Algorithm.parse_csv_data import parse
+from Algorithm.base_probability import*
 
 class Algorithm:
         def __init__(self):

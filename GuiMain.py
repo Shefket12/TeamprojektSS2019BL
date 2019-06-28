@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 #!/usr/bin/env python
@@ -13,161 +13,106 @@ from Algorithm.ProbabilityAlgorithm import *
 
 
 #Methods for Buttons---------------------
+
 def Crawler():
-    DCrawler.clear_Matchdays()
-    global crawlerConfigPopUp
-    crawlerConfigPopUp = Toplevel()
-    crawlerConfigPopUp.wm_title("Crawler Einstellungen")
-    crawlerConfigPopUp.geometry(str(popUpWidth)+"x"+str(popUpHeight))
     
-    Saison18value = IntVar()
-    Saison18start = StringVar()
-    Saison18end = StringVar()
-    Saison17value  = IntVar()
-    Saison17start = StringVar()
-    Saison17end = StringVar()
-    Saison16value  = IntVar()
-    Saison16start = StringVar()
-    Saison16end = StringVar()
-    Saison15value  = IntVar()
-    Saison15start = StringVar()
-    Saison15end = StringVar()
+    BLCrawler.get(2014,2018)
     
-    #Saison 18
-    CheckSaison18 = Checkbutton(crawlerConfigPopUp, text="Saison 18/19", variable=Saison18value,onvalue = 1, offvalue = 0)
-    CheckSaison18.grid(row=1, sticky=W)
+    InfoText.configure(state = "normal")
+    InfoText.delete("1.0",END)
+    InfoText.insert("end", "Start Algortihm-Training for the Calculation")
+    InfoText.configure(state = "disabled")
     
-    Label(crawlerConfigPopUp, text="Spieltag").grid(row=1, column = 3, sticky=W)
     
-    entryFirstDaySaison18 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison18start)
-    entryFirstDaySaison18.grid(row=1, column = 4, sticky=W)
-    entryFirstDaySaison18.insert(0, "1")
     
-    Label(crawlerConfigPopUp, text="bis").grid(row=1, column = 5, sticky=W)
+def AlgorithmConfiguration():
     
-    entryLastDaySaison18 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison18end)
-    entryLastDaySaison18.grid(row=1, column = 6, sticky=W)
-    entryLastDaySaison18.insert(0, "34")
+    
+    global AlgorithmConfigPopUp
+    AlgorithmConfigPopUp = Toplevel()
+    AlgorithmConfigPopUp.wm_title("Algorithmus Einstellung")
+    AlgorithmConfigPopUp.geometry(str(popUpWidth)+"x"+str(popUpHeight))
+    AlgorithmConfigPopUp.grid_rowconfigure(10, minsize=100)
+    
+    firstSeason = StringVar()
+    lastSeason = StringVar()
+    firstGameDay = StringVar()
+    lastGameDay = StringVar()
+    
+    #Configuration Algorithm:---------------------------------------------------------
+    variableAlgorithm.set("Algorithmus Auswahl")
+    dropdownAlgorithm = OptionMenu(AlgorithmConfigPopUp, variableAlgorithm, "Basis Algorithmus", "Poisson Regression")
+    dropdownAlgorithm.grid(row=0,column = 0,columnspan = 4,sticky=W)
+    
+    #Configuration Season:------------------------------------------------------------
+    Label(AlgorithmConfigPopUp, text="Saison:").grid(row=1, column = 0, sticky=W)
+    
+    #Entry First Season
+    entryFirstSeason = Entry(AlgorithmConfigPopUp, width = 6, textvariable= firstSeason)
+    entryFirstSeason.grid(row=1, column = 1, sticky=W)
+    entryFirstSeason.insert(0, "2014")
+    
+    Label(AlgorithmConfigPopUp, text="bis").grid(row=1, column = 2, sticky=W)
+    
+    #Entry Last Season
+    entryLastSeason = Entry(AlgorithmConfigPopUp, width = 6, textvariable= lastSeason)
+    entryLastSeason.grid(row=1, column = 3, sticky=W)
+    entryLastSeason.insert(0, "2018")
+    
+    #Configuration  GameDays:------------------------------------------------------------
+    Label(AlgorithmConfigPopUp, text="Spieltage:").grid(row=2, column = 0, sticky=W)
+    
+    #Entry First GameDay
+    entryFirstGameDay= Entry(AlgorithmConfigPopUp, width = 6, textvariable= firstGameDay)
+    entryFirstGameDay.grid(row=2, column = 1, sticky=W)
+    entryFirstGameDay.insert(0, "1")
+    
+    Label(AlgorithmConfigPopUp, text="bis").grid(row=2, column = 2, sticky=W)
+    
+    #Entry Last GameDay
+    entryLastGameDay = Entry(AlgorithmConfigPopUp, width = 6, textvariable= lastGameDay)
+    entryLastGameDay.grid(row=2, column = 3, sticky=W)
+    entryLastGameDay.insert(0, "34")
    
-    #Saison 17
+
+    #Button: Algorithm Training-----------------------------------------------------------
+    buttonRunTraining = Button(AlgorithmConfigPopUp, text= "Bestätigen",
+                               command = (lambda : RunAlgorithmTraining(
+                                   int(firstSeason.get()),
+                                   int(lastSeason.get()),
+                                   int(firstGameDay.get()),
+                                   int(lastGameDay.get()),
+                                   str(variableAlgorithm.get()))))
+    buttonRunTraining.grid(row=4 ,column= 1)
     
-    CheckSaison17 = Checkbutton(crawlerConfigPopUp, text="Saison 17/18", variable=Saison17value, onvalue = 1, offvalue = 0)
-    CheckSaison17.grid(row=2, sticky=W)
     
-    Label(crawlerConfigPopUp, text="Spieltag").grid(row=2, column = 3, sticky=W)
+    #Button: Close Configuration----------------------------------------------------------
+    buttonCloseConfiguration = Button(AlgorithmConfigPopUp, text= "Verlassen",command = AlgorithmConfigPopUp.destroy)
+    buttonCloseConfiguration.grid(row=4 ,column= 0)
     
-    entryFirstDaySaison17 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison17start)
-    entryFirstDaySaison17.grid(row=2, column = 4, sticky=W)
-    entryFirstDaySaison17.insert(0, "1")
-    
-    Label(crawlerConfigPopUp, text="bis").grid(row=2, column = 5, sticky=W)
-    
-    entryLastDaySaison17 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison17end)
-    entryLastDaySaison17.grid(row=2, column = 6, sticky=W)
-    entryLastDaySaison17.insert(0, "34")
-    
-    #Saison 16
-    CheckSaison16 = Checkbutton(crawlerConfigPopUp, text="Saison 16/17", variable=Saison16value , onvalue = 1, offvalue = 0)
-    CheckSaison16.grid(row=3, sticky=W)
-    
-    Label(crawlerConfigPopUp, text="Spieltag").grid(row=3, column = 3, sticky=W)
-    
-    entryFirstDaySaison16 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison16start)
-    entryFirstDaySaison16.grid(row=3, column = 4, sticky=W)
-    entryFirstDaySaison16.insert(0, "1")
-    
-    Label(crawlerConfigPopUp, text="bis").grid(row=3, column = 5, sticky=W)
-    
-    entryLastDaySaison16 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison16end)
-    entryLastDaySaison16.grid(row=3, column = 6, sticky=W)
-    entryLastDaySaison16.insert(0, "34")
-    
-    #Saison 15
-    CheckSaison15 = Checkbutton(crawlerConfigPopUp, text="Saison 15/16", variable=Saison15value , onvalue = 1, offvalue = 0)
-    CheckSaison15.grid(row=4, sticky=W)
-    
-    Label(crawlerConfigPopUp, text="Spieltag").grid(row=4, column = 3, sticky=W)
-    
-    entryFirstDaySaison15 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison15start)
-    entryFirstDaySaison15.grid(row=4, column = 4, sticky=W)
-    entryFirstDaySaison15.insert(0, "1")
-    
-    Label(crawlerConfigPopUp, text="bis").grid(row=4, column = 5, sticky=W)
-    
-    entryLastDaySaison15 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison15end)
-    entryLastDaySaison15.grid(row=4, column = 6, sticky=W)
-    entryLastDaySaison15.insert(0, "34")
-    
-    #Button
-    buttonRunCrawler = Button(crawlerConfigPopUp,
-                              text= "Crawler starten",
-                              command = combine_funcs(lambda: RunCrawler(Saison18value,
-                                                                        Saison18start,
-                                                                         Saison18end,
-                                                                         Saison17value,
-                                                                         Saison17start,
-                                                                         Saison17end,
-                                                                         Saison16value, 
-                                                                         Saison16start,
-                                                                         Saison16end,
-                                                                         Saison15value,
-                                                                         Saison15start,
-                                                                         Saison15end),
-                                                      crawlerConfigPopUp.destroy))
-    buttonRunCrawler.grid(row=5)
-  
-    def RunCrawler(Saison18value,
-                   Saison18start,
-                   Saison18end,
-                   Saison17value,
-                   Saison17start,
-                   Saison17end,
-                   Saison16value,
-                   Saison16start,
-                   Saison16end,
-                   Saison15value,
-                   Saison15start,
-                   Saison15end):
-        
-        if(Saison15value.get() == 1):
-            DCrawler.add_Season(2015,int(Saison15start.get()),int(Saison15end.get())) 
-            
-        if(Saison16value.get() == 1):
-            DCrawler.add_Season(2016,int(Saison16start.get()),int(Saison16end.get()))  
-            
-        if(Saison17value.get() == 1):
-            DCrawler.add_Season(2017,int(Saison17start.get()),int(Saison17end.get())) 
-            
-        if(Saison18value.get() == 1):
-            DCrawler.add_Season(2018,int(Saison18start.get()),int(Saison18end.get())) 
-            
-        DCrawler.write_CSVFile()
-        InfoText.configure(state = "normal")
-        InfoText.delete("1.0",END)
-        InfoText.insert("end", "Start Algortihm-Training for the Calculation")
-        InfoText.configure(state = "disabled")
-        
-def combine_funcs(*funcs):
-    def combined_func(*args, **kwargs):
-        for f in funcs:
-            f(*args, **kwargs)
-    return combined_func
-    
-def AlgorithmTraining():
-    CalcAlgo.processData(CVS_Path)
     InfoText.configure(state = "normal")
     InfoText.delete("1.0",END)
     InfoText.insert("end", "Choose Algorithm and Teams for the Calculation")
     InfoText.configure(state = "disabled")
     
-
+def RunAlgorithmTraining(FirstSeason, LastSeason, FirstGameDay, LastGameDay, AlgorithmChoice):
+    CalcAlgo.deleteData()
+    
+    #Basis Algorithm:
+    if(AlgorithmChoice == "Basis Algorithmus"):
+        CalcAlgo.setAlgorithm(0)
+        CalcAlgo.processData(CVS_Path, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    elif((AlgorithmChoice == "Poisson Regression")):
+        CalcAlgo.setAlgorithm(1)
+        CalcAlgo.processData(CVS_Path, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    
 def Calculate():
     
-    if (str(variableHome.get()) != "Home") and (str(variableGuest.get()) != "Guest") and(str(variableHome.get())!= str(variableGuest.get())) and (str(variableAlgorithm.get()) != "Algorithm Selection"):
+    if (str(variableHome.get()) != "Home") and (str(variableGuest.get()) != "Guest") and(str(variableHome.get())!= str(variableGuest.get())):
         
         print(get_TeamID(str(variableHome.get())))
         print(get_TeamID(str(variableGuest.get())))
-        result = CalcAlgo.getBaseAlgorithm(get_TeamID(str(variableHome.get())), get_TeamID(str(variableGuest.get())))
+        result = CalcAlgo.getResult(get_TeamID(str(variableHome.get())), get_TeamID(str(variableGuest.get())))
         
         print(result[0])
         print(result[1])
@@ -181,7 +126,6 @@ def Calculate():
         
         #Calculate
         
-        
         #Insert ResultText
         ResultText.configure(state = "normal")
         ResultText.delete("1.0",END)
@@ -193,7 +137,7 @@ def Calculate():
 
 #Initialize Root-Window---------------------     
 root = Tk()
-root.title("Softwareprojekt Bundesliga SS19 GUI")
+root.title("Softwareprojekt Bundesliga")
 
 #Numbers for Root and Widgets---------------------
 rootWidth = 800
@@ -202,8 +146,8 @@ rootResulution = str(rootWidth)+"x"+str(rootHeight)
 root.geometry(rootResulution)
 root.resizable(width = False, height = False)
 
-popUpHeight = 140
-popUpWidth = 280
+popUpHeight = 105
+popUpWidth = 250
 
 buttonHeight = 30
 buttonWidth = rootWidth/2
@@ -215,15 +159,15 @@ dropdownWidth = rootWidth/2
 
 CVS_Path = "Data/BundesligaData.csv" 
 
-CalcAlgo = Algorithm()
-DCrawler = DataCrawler(CVS_Path)
+CalcAlgo = ProbabilityAlgorithm()
+BLCrawler = DataCrawler(CVS_Path)
 
 
 # Initialize Widgets---------------------
 
 #Buttons
 buttonCrawler = Button(root, text = "Crawler", command = Crawler)
-buttonAlgorithm = Button(root, text = "Run Algorithm-Training", command = AlgorithmTraining)
+buttonAlgorithm = Button(root, text = "Algorithmus Einstellung", command = AlgorithmConfiguration)
 buttonCalculate = Button(root, text = "Calculation", command = Calculate)
 
 #DropDownMenu
@@ -232,9 +176,7 @@ variableGuest = StringVar(root)
 variableAlgorithm = StringVar(root)
 variableHome.set("Home") 
 variableGuest.set("Guest") 
-variableAlgorithm.set("Algorithm Selection")
 
-dropdownAlgorithm = OptionMenu(root, variableAlgorithm, "Minimaler Vorhersage-Algorithmus")
 dropdownHome = OptionMenu(root, variableHome, "FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "Hannover 96", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "1. FC Nürnberg", "FC Schalke 04", "VfB Stuttgart", "VfL Wolfsburg")
 dropdownGuest = OptionMenu(root, variableGuest, "FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "Hannover 96", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "1. FC Nürnberg", "FC Schalke 04", "VfB Stuttgart", "VfL Wolfsburg")
 
@@ -258,7 +200,7 @@ buttonCalculate.pack()
 #DropDownMenu
 dropdownHome.pack()
 dropdownGuest.pack()
-dropdownAlgorithm.pack()
+
 
 #Text
 InfoText.pack(side = BOTTOM)
@@ -274,7 +216,7 @@ buttonCalculate.place(height = buttonHeight, width = buttonWidth, x = buttonWidt
 #DropDownMenu
 dropdownHome.place(height= dropdownHeight, width = dropdownWidth, x = 0, y = 2*buttonHeight)
 dropdownGuest.place(height= dropdownHeight, width = dropdownWidth, x = dropdownWidth, y = 2*buttonHeight)
-dropdownAlgorithm.place(height= dropdownHeight, width = dropdownWidth, x = 0, y = buttonHeight)
+
 
 #Text
 ResultText.place(x = 250, y = rootHeight/2)

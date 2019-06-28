@@ -1,8 +1,7 @@
 import codecs
 import csv
 from dateutil import parser as date_parser
-from match import Match
-
+from Algorithm.match import Match
 
 
 #loads the csv data stored by the crawler and extracts the matches

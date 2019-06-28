@@ -4,69 +4,157 @@
 # In[ ]:
 
 
+#!/usr/bin/env python
+# coding: utf-8
+from Crawler.Crawlerpy import *
+from Data.TeamIdentification import *
 from tkinter import *
-from Crawlerpy import *
-from ProbabilityAlgorithm import *
+from Algorithm.ProbabilityAlgorithm import *
 
 
 #Methods for Buttons---------------------
 def Crawler():
-    
     DCrawler.clear_Matchdays()
     global crawlerConfigPopUp
     crawlerConfigPopUp = Toplevel()
-    crawlerConfigPopUp.wm_title("Crawler Settings")
+    crawlerConfigPopUp.wm_title("Crawler Einstellungen")
     crawlerConfigPopUp.geometry(str(popUpWidth)+"x"+str(popUpHeight))
     
-    l = Label(crawlerConfigPopUp, text="Select Seasons")
-    l.grid(row=1, column=0)
+    Saison18value = IntVar()
+    Saison18start = StringVar()
+    Saison18end = StringVar()
+    Saison17value  = IntVar()
+    Saison17start = StringVar()
+    Saison17end = StringVar()
+    Saison16value  = IntVar()
+    Saison16start = StringVar()
+    Saison16end = StringVar()
+    Saison15value  = IntVar()
+    Saison15start = StringVar()
+    Saison15end = StringVar()
     
-    var1 = IntVar()
-    var2 = IntVar()
-    var3 = IntVar()
-    var4 = IntVar()
+    #Saison 18
+    CheckSaison18 = Checkbutton(crawlerConfigPopUp, text="Saison 18/19", variable=Saison18value,onvalue = 1, offvalue = 0)
+    CheckSaison18.grid(row=1, sticky=W)
     
-    Saison18 = Checkbutton(crawlerConfigPopUp, text="Saison 18/19", variable=var1,onvalue = 1, offvalue = 0)
-    Saison18.grid(row=1, sticky=W)
+    Label(crawlerConfigPopUp, text="Spieltag").grid(row=1, column = 3, sticky=W)
     
-    Saison17 = Checkbutton(crawlerConfigPopUp, text="Saison 17/18", variable=var2, onvalue = 1, offvalue = 0)
-    Saison17.grid(row=2, sticky=W)
+    entryFirstDaySaison18 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison18start)
+    entryFirstDaySaison18.grid(row=1, column = 4, sticky=W)
+    entryFirstDaySaison18.insert(0, "1")
     
-    Saison16 = Checkbutton(crawlerConfigPopUp, text="Saison 16/17", variable=var3, onvalue = 1, offvalue = 0)
-    Saison16.grid(row=3, sticky=W)
+    Label(crawlerConfigPopUp, text="bis").grid(row=1, column = 5, sticky=W)
     
-    Saison15 = Checkbutton(crawlerConfigPopUp, text="Saison 15/16", variable=var4, onvalue = 1, offvalue = 0)
-    Saison15.grid(row=4, sticky=W)
+    entryLastDaySaison18 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison18end)
+    entryLastDaySaison18.grid(row=1, column = 6, sticky=W)
+    entryLastDaySaison18.insert(0, "34")
+   
+    #Saison 17
     
-    b = Button(crawlerConfigPopUp, text= "Okay", command =lambda: RunCrawler(var1, var2, var3, var4))
-    b.grid(row=5, column=0)
+    CheckSaison17 = Checkbutton(crawlerConfigPopUp, text="Saison 17/18", variable=Saison17value, onvalue = 1, offvalue = 0)
+    CheckSaison17.grid(row=2, sticky=W)
     
-    def RunCrawler(var1, var2, var3, var4):
+    Label(crawlerConfigPopUp, text="Spieltag").grid(row=2, column = 3, sticky=W)
+    
+    entryFirstDaySaison17 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison17start)
+    entryFirstDaySaison17.grid(row=2, column = 4, sticky=W)
+    entryFirstDaySaison17.insert(0, "1")
+    
+    Label(crawlerConfigPopUp, text="bis").grid(row=2, column = 5, sticky=W)
+    
+    entryLastDaySaison17 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison17end)
+    entryLastDaySaison17.grid(row=2, column = 6, sticky=W)
+    entryLastDaySaison17.insert(0, "34")
+    
+    #Saison 16
+    CheckSaison16 = Checkbutton(crawlerConfigPopUp, text="Saison 16/17", variable=Saison16value , onvalue = 1, offvalue = 0)
+    CheckSaison16.grid(row=3, sticky=W)
+    
+    Label(crawlerConfigPopUp, text="Spieltag").grid(row=3, column = 3, sticky=W)
+    
+    entryFirstDaySaison16 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison16start)
+    entryFirstDaySaison16.grid(row=3, column = 4, sticky=W)
+    entryFirstDaySaison16.insert(0, "1")
+    
+    Label(crawlerConfigPopUp, text="bis").grid(row=3, column = 5, sticky=W)
+    
+    entryLastDaySaison16 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison16end)
+    entryLastDaySaison16.grid(row=3, column = 6, sticky=W)
+    entryLastDaySaison16.insert(0, "34")
+    
+    #Saison 15
+    CheckSaison15 = Checkbutton(crawlerConfigPopUp, text="Saison 15/16", variable=Saison15value , onvalue = 1, offvalue = 0)
+    CheckSaison15.grid(row=4, sticky=W)
+    
+    Label(crawlerConfigPopUp, text="Spieltag").grid(row=4, column = 3, sticky=W)
+    
+    entryFirstDaySaison15 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison15start)
+    entryFirstDaySaison15.grid(row=4, column = 4, sticky=W)
+    entryFirstDaySaison15.insert(0, "1")
+    
+    Label(crawlerConfigPopUp, text="bis").grid(row=4, column = 5, sticky=W)
+    
+    entryLastDaySaison15 = Entry(crawlerConfigPopUp, width = 2, textvariable=Saison15end)
+    entryLastDaySaison15.grid(row=4, column = 6, sticky=W)
+    entryLastDaySaison15.insert(0, "34")
+    
+    #Button
+    buttonRunCrawler = Button(crawlerConfigPopUp,
+                              text= "Crawler starten",
+                              command = combine_funcs(lambda: RunCrawler(Saison18value,
+                                                                        Saison18start,
+                                                                         Saison18end,
+                                                                         Saison17value,
+                                                                         Saison17start,
+                                                                         Saison17end,
+                                                                         Saison16value, 
+                                                                         Saison16start,
+                                                                         Saison16end,
+                                                                         Saison15value,
+                                                                         Saison15start,
+                                                                         Saison15end),
+                                                      crawlerConfigPopUp.destroy))
+    buttonRunCrawler.grid(row=5)
+  
+    def RunCrawler(Saison18value,
+                   Saison18start,
+                   Saison18end,
+                   Saison17value,
+                   Saison17start,
+                   Saison17end,
+                   Saison16value,
+                   Saison16start,
+                   Saison16end,
+                   Saison15value,
+                   Saison15start,
+                   Saison15end):
         
-        if(var1.get() == 1):
-            DCrawler.add_Season(2018,1,35) 
+        if(Saison15value.get() == 1):
+            DCrawler.add_Season(2015,int(Saison15start.get()),int(Saison15end.get())) 
             
-        if(var2.get() == 1):
-            DCrawler.add_Season(2017,1,35)  
+        if(Saison16value.get() == 1):
+            DCrawler.add_Season(2016,int(Saison16start.get()),int(Saison16end.get()))  
             
-        if(var3.get() == 1):
-            DCrawler.add_Season(2016,1,35) 
+        if(Saison17value.get() == 1):
+            DCrawler.add_Season(2017,int(Saison17start.get()),int(Saison17end.get())) 
             
-        if(var4.get() == 1):
-            DCrawler.add_Season(2015,1,35) 
+        if(Saison18value.get() == 1):
+            DCrawler.add_Season(2018,int(Saison18start.get()),int(Saison18end.get())) 
             
         DCrawler.write_CSVFile()
-        
         InfoText.configure(state = "normal")
         InfoText.delete("1.0",END)
         InfoText.insert("end", "Start Algortihm-Training for the Calculation")
         InfoText.configure(state = "disabled")
-    
-
+        
+def combine_funcs(*funcs):
+    def combined_func(*args, **kwargs):
+        for f in funcs:
+            f(*args, **kwargs)
+    return combined_func
     
 def AlgorithmTraining():
-    CalcAlgo.processData("BundesligaData.csv")
-    CalcAlgo.printData()
+    CalcAlgo.processData(CVS_Path)
     InfoText.configure(state = "normal")
     InfoText.delete("1.0",END)
     InfoText.insert("end", "Choose Algorithm and Teams for the Calculation")
@@ -77,9 +165,13 @@ def Calculate():
     
     if (str(variableHome.get()) != "Home") and (str(variableGuest.get()) != "Guest") and(str(variableHome.get())!= str(variableGuest.get())) and (str(variableAlgorithm.get()) != "Algorithm Selection"):
         
-        result = CalcAlgo.getBaseAlgorithm(str(variableHome.get()), str(variableGuest.get()))
+        print(get_TeamID(str(variableHome.get())))
+        print(get_TeamID(str(variableGuest.get())))
+        result = CalcAlgo.getBaseAlgorithm(get_TeamID(str(variableHome.get())), get_TeamID(str(variableGuest.get())))
+        
         print(result[0])
         print(result[1])
+        print(result[2])
         
         #Delete InfoText
         InfoText.configure(state = "normal")
@@ -93,13 +185,11 @@ def Calculate():
         #Insert ResultText
         ResultText.configure(state = "normal")
         ResultText.delete("1.0",END)
-        ResultText.insert("end", "Home: "+ str(result[0])+"\n"+"Guest: "+str(result[1]))
+        ResultText.insert("end", "Home: "+ str(result[0])+"\n"+"Guest: "+str(result[1])+"\n"+"Draw: "+str(result[2]))
         ResultText.configure(state = "disabled")
     else: return
 
-#Initialize variables for calculation
-CalcAlgo = Algorithm()
-DCrawler = DataCrawler("BundesligaData.csv")
+
 
 #Initialize Root-Window---------------------     
 root = Tk()
@@ -112,14 +202,21 @@ rootResulution = str(rootWidth)+"x"+str(rootHeight)
 root.geometry(rootResulution)
 root.resizable(width = False, height = False)
 
-popUpHeight = 150
-popUpWidth = 200
+popUpHeight = 140
+popUpWidth = 280
 
 buttonHeight = 30
 buttonWidth = rootWidth/2
 
 dropdownHeight = buttonHeight
 dropdownWidth = rootWidth/2
+
+#Initialize variables for calculation
+
+CVS_Path = "Data/BundesligaData.csv" 
+
+CalcAlgo = Algorithm()
+DCrawler = DataCrawler(CVS_Path)
 
 
 # Initialize Widgets---------------------
@@ -184,16 +281,3 @@ ResultText.place(x = 250, y = rootHeight/2)
 
 #Start Mainloop of the Root---------------------
 root.mainloop()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-

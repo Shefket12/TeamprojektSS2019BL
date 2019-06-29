@@ -13,7 +13,7 @@ def parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
         csv_reader = csv.reader(csv_file ,delimiter=',')
         
         #iterate over each line
-        for row in csv_reader:
+        for row in csv_reader[1:]:
             season_year = int(row[1])
             game_day = int(row[2])
             

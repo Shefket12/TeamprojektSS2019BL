@@ -24,7 +24,8 @@ class DataCrawler:
             return False
      
     def get(self, FirstSeason, LastSeason):
-        csv = open(self.csvPath, "w") 
+        csv = open(self.csvPath, "w")
+        csv.write("Date" + "," + "," + "," + "HomeTeam" + "," + "AwayTeam" + "," + "GoalsHome" + "," + "GoalsAway" + "\n")
         if(self.internet_on() == False):
             raise Exception('You should check your internet connection, before you proceed')
         

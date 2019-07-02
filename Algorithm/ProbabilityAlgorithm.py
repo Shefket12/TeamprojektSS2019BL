@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
-
-
 # !/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 import sys
@@ -22,11 +19,11 @@ class ProbabilityAlgorithm:
     #poisson regression = 1
     def __init__(self):
         self.matches = []
-        self.algorithmIndex = 0
+        self.algorithmIndex = -1
     
     def setAlgorithm(self, index):
         self.algorithmIndex = index
-        print(index)
+        
     
     def printData(self):
         for i in self.matches:
@@ -34,10 +31,16 @@ class ProbabilityAlgorithm:
        
     def processData(self, filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
         self.matches = parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
-        self.printData()
         
     def deleteData(self):
         self.matches = []
+    
+    def hasMatches(self):
+        if(self.matches != []):
+            return True
+        else:
+            return False
+           
         
     # compute tetas for both teams for poisson regression
     def computeTeta(self, filename):
@@ -47,9 +50,9 @@ class ProbabilityAlgorithm:
         return poisson_model
 
     # computes and Array with the probabilities for different scores between two given teams, i.e. Bayern 3-1 BVB 5,39%
-    def simulateMatch(self, homeTeam, awayTeam, data):
+    def simulateMatch(self, homeTeam, awayTeam, filename):
         max_goals=10
-        poisson_model = computeTeta(self, filename)
+        poisson_model = self.computeTeta(filename)
         home_goals_avg = poisson_model.predict(pd.DataFrame(data={'Team': homeTeam, 
                                                                 'Opponent': awayTeam,'Home':1},
                                                           index=[1])).values[0]
@@ -60,18 +63,20 @@ class ProbabilityAlgorithm:
         return(np.outer(np.array(team_pred[0]), np.array(team_pred[1])))
 
     # these methods are the same, just with different returns. Give out the probabilit for a team to win or a draw between the teams
+
     def computeWinProbHome(self, HomeTeam, AwayTeam, filename):
-        game = simulateMatch(HomeTeam, AwayTeam, data)
+        print(filename)
+        game = self.simulateMatch(HomeTeam, AwayTeam, filename)
         winHome = np.sum(np.tril(game, -1))
         return winHome
 
     def computeWinProbAway(self, HomeTeam, AwayTeam, filename):
-        game = simulateMatch(HomeTeam, AwayTeam, data)
+        game = self.simulateMatch(HomeTeam, AwayTeam, filename)
         winAway = np.sum(np.triu(game, 1))
         return winAway
 
     def computeDraw(self, HomeTeam, AwayTeam, filename):
-        game = simulateMatch(HomeTeam, AwayTeam, data)
+        game = self.simulateMatch(HomeTeam, AwayTeam, filename)
         draw = np.sum(np.diag(game, -1))
         return draw
     
@@ -87,7 +92,9 @@ class ProbabilityAlgorithm:
             
             # Poisson regression, filename
             elif(self.algorithmIndex == 1):
-                probabilities = [computeWinProbHome(self.matches, HomeTeam, GuestTeam, filename), computeWinProbAway(self.matches, HomeTeam, GuestTeam, filename), computeWinProbDraw(self.matches, HomeTeam, GuestTeam, filename)]
+                
+                probabilities = [self.computeWinProbHome(HomeTeam, GuestTeam, filename), self.computeWinProbAway(HomeTeam, GuestTeam, filename), self.computeDraw(HomeTeam, GuestTeam, filename)]
+                
             else:
                 sys.stderr.write("No algorithm given for the calculation")
             

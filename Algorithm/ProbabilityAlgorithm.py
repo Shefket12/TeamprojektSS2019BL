@@ -11,6 +11,8 @@ import numpy as np
 from scipy.stats import poisson
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
+import csv
+from Data.writeTeamIDs import *
 
 class ProbabilityAlgorithm:
     
@@ -41,10 +43,19 @@ class ProbabilityAlgorithm:
         else:
             return False
            
-        
+    #replace the IDs of each team with their actual name, for pandas
+    def replaceIDs(dataframe):
+        teamIDs = "..\\Data\\TeamIDs.csv"
+        with open(teamIDs) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')            
+            for row in csv_reader:
+                dataframe['HomeTeam'].replace(int(row[0]), row[1],inplace=True)
+                dataframe['AwayTeam'].replace(int(row[0]), row[1],inplace=True)
+    
     # compute tetas for both teams for poisson regression
     def computeTeta(self, filename):
         data = pd.read_csv(filename)
+        self.replaceIDs(data)
         goal_model_data =  pd.concat([data[['HomeTeam', 'AwayTeam', 'GoalsHome']].assign(Home=1).rename(columns={'HomeTeam': 'Team', 'AwayTeam': 'Opponent', 'GoalsHome': 'Goals'}),data[['AwayTeam', 'HomeTeam', 'GoalsAway']].assign(Home=0).rename(columns={'AwayTeam': 'Team', 'HomeTeam': 'Opponent', 'GoalsAway': 'Goals'})])
         poisson_model = smf.glm(formula='Goals ~ Home + Team + Opponent', data=goal_model_data, family=sm.families.Poisson()).fit()
         return poisson_model

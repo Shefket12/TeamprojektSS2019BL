@@ -1,3 +1,9 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# !/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
+
 import codecs
 import csv
 from dateutil import parser as date_parser
@@ -11,9 +17,11 @@ def parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
     #open the csv file
     with open(filename) as csv_file:
         csv_reader = csv.reader(csv_file ,delimiter=',')
-        
+        #Skipps the first row
+        next(csv_reader, None)
         #iterate over each line
-        for row in csv_reader[1:]:
+        for row in csv_reader:
+            
             season_year = int(row[1])
             game_day = int(row[2])
             
@@ -22,8 +30,8 @@ def parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
             
                 #extract the information stored in the csv
                 date = date_parser.parse(row[0])
-                home_team = int(row[3])
-                external_team = int(row[4])
+                home_team = str(row[3])
+                external_team = str(row[4])
                 home_score = int(row[5])
                 external_score = int(row[6])
                 #create a match object, containing the match information

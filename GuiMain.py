@@ -1,16 +1,22 @@
-#!/usr/bin/env python
-# coding: utf-8
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# !/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 
 from Crawler.Crawlerpy import *
 from Data.TeamIdentification import *
 from tkinter import *
 from Algorithm.ProbabilityAlgorithm import *
+from PIL import ImageTk, Image
 
+import os
 
 #Methods for Buttons---------------------
 
 def Crawler():
-    BLCrawler.get(2012,2018)
+    
+    BLCrawler.getSeasons(2013,2018)
     InfoVar.set("Konfigurieren Sie ihre Berechnung in den Einstellungen")
     
        
@@ -108,24 +114,34 @@ def Calculate():
         if(CalcAlgo.algorithmIndex != -1):
             if (str(variableHome.get()) != "Heim") and (str(variableGuest.get()) != "Gast"):
                 if(str(variableHome.get())!= str(variableGuest.get())):
-                
-                    result = CalcAlgo.getResult(get_TeamID(str(variableHome.get())), get_TeamID(str(variableGuest.get())), CVS_Path)
+                    
+                    
+                    result = CalcAlgo.getResult(str(variableHome.get()), str(variableGuest.get()), CVS_Path)
+                    
+                    loadHomeTeam = Image.open(f"Data/Logo/{str(variableHome.get())}.gif")
+                    renderHomeTeam = ImageTk.PhotoImage(loadHomeTeam)
+                    imgHomeTeam = Label(root, image=renderHomeTeam)
+                    imgHomeTeam.image = renderHomeTeam
+                    imgHomeTeam.place(x=100, y=rootHeight/3)
+                    
+                    ResultVarHome.set(str(variableHome.get())+":\n"+ str(result[0]*100)+" %")
+                    
+                    loadGuestTeam = Image.open(f"Data/Logo/{str(variableGuest.get())}.gif")
+                    renderGuestTeam = ImageTk.PhotoImage(loadGuestTeam)
+                    imgGuestTeam = Label(root, image=renderGuestTeam)
+                    imgGuestTeam.image = renderGuestTeam
+                    imgGuestTeam.place(x=370, y=rootHeight/3)
+                    
+                    ResultVarGuest.set(str(variableGuest.get())+":\n"+ str(result[1]*100)+" %")
+                    
+                    
+                    ResultVarDraw.set("Unentschieden:\n"+ str(result[2]*100)+" %")
         
-                    print(result[0])
-                    print(result[1])
-                    print(result[2])
                     print("Test: "+str(result[0]+result[1]+result[2]))
         
                     #Delete InfoText
                     InfoVar.set("")
-        
-                    #Calculate
-        
-                    #Insert ResultText
-                    ResultText.configure(state = "normal")
-                    ResultText.delete("1.0",END)
-                    ResultText.insert("end", str(variableHome.get())+": \t"+ str(result[0]*100)+" %\n"+str(variableGuest.get())+": \t"+str(result[1]*100)+" %\n"+"Unentschieden: \t"+str(result[2]*100)+" %")
-                    ResultText.configure(state = "disabled")
+                    
                 else:
                     InfoVar.set("Wählen Sie zwei unterschiedliche Mannschaften aus!")
             else:
@@ -135,13 +151,13 @@ def Calculate():
     else:
         InfoVar.set("Es gibt keine Daten für die Berechnung! Starten Sie den Crawler und konfigurieren Sie die Daten in den Einstellungen.")
 
-def NextGameDaySetUp(var):
+def NextGameDaySetUp():
     overall = "Kommender Spieltag:\n"
     
     for i in range(1,10):
         overall = overall +"Spiel "+str(i)+": \n"
     
-    var.set(overall)
+    NextGameDayVar.set(overall)
     
     return
     
@@ -174,6 +190,8 @@ CalcAlgo = ProbabilityAlgorithm()
 BLCrawler = DataCrawler(CVS_Path)
 
 
+
+
 # Initialize Widgets---------------------
 
 #Buttons
@@ -188,8 +206,8 @@ variableAlgorithm = StringVar(root)
 variableHome.set("Heim") 
 variableGuest.set("Gast") 
 
-dropdownHome = OptionMenu(root, variableHome, "FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "Hannover 96", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "1. FC Nürnberg", "FC Schalke 04", "VfB Stuttgart", "VfL Wolfsburg")
-dropdownGuest = OptionMenu(root, variableGuest, "FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "Hannover 96", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "1. FC Nürnberg", "FC Schalke 04", "VfB Stuttgart", "VfL Wolfsburg")
+dropdownHome = OptionMenu(root, variableHome, "FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "FC Schalke 04", "VfL Wolfsburg","1. FC Köln", "SC Paderborn 07","1. FC Union Berlin")
+dropdownGuest = OptionMenu(root, variableGuest,"FC Augsburg", "Hertha BSC", "Werder Bremen", "Borussia Dortmund", "Fortuna Düsseldorf", "Eintracht Frankfurt", "SC Freiburg", "TSG 1899 Hoffenheim", "RB Leipzig", "Bayer Leverkusen", "1. FSV Mainz 05", "Borussia Mönchengladbach", "FC Bayern", "FC Schalke 04", "VfL Wolfsburg","1. FC Köln", "SC Paderborn 07","1. FC Union Berlin")
 
 #Text
 InfoVar = StringVar()
@@ -198,13 +216,22 @@ InfoText = Message(root,textvariable = InfoVar, width= rootWidth, relief = "flat
 
 
 
-ResultText = Text(root, height=3, width= rootWidth, relief= "flat")
-ResultText.insert("end", "")
-ResultText.configure(state="disabled")
+ResultVarHome = StringVar()
+ResultVarHome.set("")
+ResultTextHome = Message(root,textvariable = ResultVarHome, width= rootWidth, relief = "flat")
+
+ResultVarGuest = StringVar()
+ResultVarGuest.set("")
+ResultTextGuest = Message(root,textvariable = ResultVarGuest, width= rootWidth, relief = "flat")
+
+ResultVarDraw = StringVar()
+ResultVarDraw.set("")
+ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, relief = "flat")
+
 
 NextGameDayVar = StringVar()
 NextGameDayText = Message(root,textvariable=NextGameDayVar, width= int(buttonWidth), relief = FLAT)
-NextGameDaySetUp(NextGameDayVar)
+NextGameDaySetUp()
 
 
 #Pack Widgets---------------------
@@ -221,7 +248,9 @@ dropdownGuest.pack()
 
 #Text
 InfoText.pack()
-ResultText.pack()
+ResultTextHome.pack()
+ResultTextGuest.pack()
+ResultTextDraw.pack()
 NextGameDayText.pack()
 
 #Place Widgets---------------------
@@ -240,8 +269,11 @@ dropdownGuest.place(height= dropdownHeight, width = dropdownWidth, x = dropdownW
 
 #Text 
 InfoText.place(x = 0, y = rootHeight-30)
-ResultText.place(x = rootWidth/6, y = rootHeight/2)
+ResultTextHome.place(x = 50, y = rootHeight/3+50)
+ResultTextGuest.place(x = buttonWidth+50, y = rootHeight/3+50)
+ResultTextDraw.place(x = rootWidth/4, y = rootHeight/2+50)
 NextGameDayText.place(x = 2*buttonWidth, y = buttonHeight)
 
 #Start Mainloop of the Root---------------------
 root.mainloop()
+

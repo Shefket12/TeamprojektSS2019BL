@@ -1,8 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
 
 # !/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
+
+
 import sys
 from Algorithm.parse_csv_data import parse
 from Algorithm.base_probability import*
@@ -44,8 +44,8 @@ class ProbabilityAlgorithm:
             return False
            
     #replace the IDs of each team with their actual name, for pandas
-    def replaceIDs(dataframe):
-        teamIDs = "..\\Data\\TeamIDs.csv"
+    def replaceIDs(self,dataframe):
+        teamIDs = "Data/TeamIDs.csv"
         with open(teamIDs) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')            
             for row in csv_reader:
@@ -55,7 +55,7 @@ class ProbabilityAlgorithm:
     # compute tetas for both teams for poisson regression
     def computeTeta(self, filename):
         data = pd.read_csv(filename)
-        self.replaceIDs(data)
+        #self.replaceIDs(data)
         goal_model_data =  pd.concat([data[['HomeTeam', 'AwayTeam', 'GoalsHome']].assign(Home=1).rename(columns={'HomeTeam': 'Team', 'AwayTeam': 'Opponent', 'GoalsHome': 'Goals'}),data[['AwayTeam', 'HomeTeam', 'GoalsAway']].assign(Home=0).rename(columns={'AwayTeam': 'Team', 'HomeTeam': 'Opponent', 'GoalsAway': 'Goals'})])
         poisson_model = smf.glm(formula='Goals ~ Home + Team + Opponent', data=goal_model_data, family=sm.families.Poisson()).fit()
         return poisson_model

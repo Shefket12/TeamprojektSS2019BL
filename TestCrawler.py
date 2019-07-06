@@ -1,46 +1,64 @@
-from Crawlerpy import *
-import csv    
-class CrawlerTesting:
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[36]:
+
+
+from Crawler.Crawlerpy import *
+import csv   
+
+
+class CrawlerTest:
         
     #creating a new Datacrawler
-    filename = "BuliDaten.csv"
-    Crawler = DataCrawler(filename)
+    def __init__(self, file, FirstSeason, LastSeason):
+        self.filename = file
+        self.Crawler = DataCrawler(self.filename)
+        self.FirstSeason = FirstSeason
+        self.LastSeason = LastSeason
+        self.Crawler.getSeasons(self.FirstSeason, self.LastSeason)
     
     #variables for the matchdays(FirstMatchday, LastMatchday)
-    Season = 2018
-    FirstMatchday = 1 
-    LastMatchday = 3
+    
+
     
     #checking, if the internet-connection is working, seperately
-    def checkInternet(self, Crawler):
-        if(Crawler.internet_on()==True):
+    def checkInternet(self):
+        if(self.Crawler.internet_on()==True):
                 print("Internet funktionert")
-	else:
-		print("Gerät ist nicht mit dem Internet verbunden")
+        else:
+            print("Gerät ist nicht mit dem Internet verbunden")
     
-    #fetching the games and saving them into an array
-    def addSeasonTest(self, Crawler, Season, FirstMatchday, LastMatchday):
-	Crawler.clear_Matchdays()
-	Crawler.add_Season(Season, FirstMatchday, LastMatchday)
         
     #writing the fetched games into a CSVFile
-    def writeNewCSVFileTest(self, Crawler):
-        Crawler.write_CSVFile()
     
     #checking the number of games(if all desired games are written in the CSV-file)
-    def checkNumOfGames(self, filename, LastMatchday, FirstMatchday):
+    def checkNumOfGames(self):
         counter = 0
         numOfGames = 0
-        with open(filename)as csv_file:
+        with open(self.filename)as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
     
             #counting the rows\n",
             for row in csv_reader:
                 counter += 1
-            numOfGames = (LastMatchday-FirstMatchday) * 9
+                
+            numOfGames = ((self.LastSeason+1)-self.FirstSeason) * 34 * 9
+            #first row isnt a Game
+            counter -= 1
+            
         if(numOfGames == counter):
             print("All fine")
         elif(numOfGames > counter): 
             print("There too few games in the file")
         else:
             print("There are too many games in the csv file")
+
+
+Test = CrawlerTest("Data/BundesligaTest.csv", 2011,2018)
+
+
+Test.checkInternet()
+
+
+Test.checkNumOfGames()

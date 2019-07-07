@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -14,9 +20,10 @@ import os
 
 #Methods for Buttons---------------------
 
+
 def Crawler():
     
-    BLCrawler.getSeasons(2013,2018)
+    BLCrawler.getSeasons(2012,2018)
     InfoVar.set("Konfigurieren Sie ihre Berechnung in den Einstellungen")
     
        
@@ -117,18 +124,20 @@ def Calculate():
                     
                     
                     result = CalcAlgo.getResult(str(variableHome.get()), str(variableGuest.get()), CVS_Path)
-                    
+                    imgHomeTeam.config(image = "")
                     loadHomeTeam = Image.open(f"Data/Logo/{str(variableHome.get())}.gif")
                     renderHomeTeam = ImageTk.PhotoImage(loadHomeTeam)
-                    imgHomeTeam = Label(root, image=renderHomeTeam)
+                    imgHomeTeam.config(image=renderHomeTeam)
                     imgHomeTeam.image = renderHomeTeam
                     imgHomeTeam.place(x=100, y=rootHeight/3)
                     
                     ResultVarHome.set(str(variableHome.get())+":\n"+ str(result[0]*100)+" %")
                     
+                    
+                    imgGuestTeam.config(image = "")
                     loadGuestTeam = Image.open(f"Data/Logo/{str(variableGuest.get())}.gif")
                     renderGuestTeam = ImageTk.PhotoImage(loadGuestTeam)
-                    imgGuestTeam = Label(root, image=renderGuestTeam)
+                    imgGuestTeam.config(image=renderGuestTeam)
                     imgGuestTeam.image = renderGuestTeam
                     imgGuestTeam.place(x=370, y=rootHeight/3)
                     
@@ -189,7 +198,8 @@ CVS_Path = "Data/BundesligaData.csv"
 CalcAlgo = ProbabilityAlgorithm()
 BLCrawler = DataCrawler(CVS_Path)
 
-
+imgHomeTeam = Label(root)
+imgGuestTeam = Label(root)
 
 
 # Initialize Widgets---------------------
@@ -276,4 +286,3 @@ NextGameDayText.place(x = 2*buttonWidth, y = buttonHeight)
 
 #Start Mainloop of the Root---------------------
 root.mainloop()
-

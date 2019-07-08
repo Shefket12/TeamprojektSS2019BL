@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
 
 
 # !/usr/bin/env python
@@ -12,10 +11,10 @@
 
 from Crawler.Crawlerpy import *
 from Data.TeamIdentification import *
-from tkinter import *
+from tkinter import*
 from Algorithm.ProbabilityAlgorithm import *
 from PIL import ImageTk, Image
-
+import datetime
 import os
 
 #Methods for Buttons---------------------
@@ -160,11 +159,48 @@ def Calculate():
     else:
         InfoVar.set("Es gibt keine Daten für die Berechnung! Starten Sie den Crawler und konfigurieren Sie die Daten in den Einstellungen.")
 
+        
+def getNextGameDay():
+    
+    file = "Data/nextSeason.csv"
+    NSCrawler = DataCrawler(file)
+    NSCrawler.getNextSeason(2019)
+    result = []
+    gameday = 1
+    now = datetime.datetime.now().isoformat()
+    #open the csv file
+    with open(file) as csv_file:
+        csv_reader = csv.reader(csv_file ,delimiter=',')
+        #Skipps the first row
+        next(csv_reader, None)
+        #iterate over each line
+        for row in csv_reader:
+            
+            if(gameday < int(row[2])):
+                break
+            
+            if(gameday > int(row[2])):
+                continue
+            
+            if(now > str(row[0])):
+                gameday += 1
+                continue
+            
+            home_team = str(row[3])
+            external_team = str(row[4])
+            match = [home_team, external_team]
+            
+            result.append(match)
+    return result        
+        
+        
+        
 def NextGameDaySetUp():
+    gameday = getNextGameDay()
     overall = "Kommender Spieltag:\n"
     
-    for i in range(1,10):
-        overall = overall +"Spiel "+str(i)+": \n"
+    for game in gameday:
+        overall = overall + game[0]+" vs. "+game[1]+"\n\n"
     
     NextGameDayVar.set(overall)
     
@@ -174,6 +210,13 @@ def NextGameDaySetUp():
 #Initialize Root-Window---------------------     
 root = Tk()
 root.title("Softwareprojekt Bundesliga")
+
+#img = Image("photo", file="./Data/Logo/Bundesliga.gif")
+#root.iconphoto(True, img) # you may also want to try this.
+loadimg = Image.open("Data/Logo/Bundesliga.gif")
+img = ImageTk.PhotoImage(loadimg)
+root.call('wm','iconphoto', root._w, img)
+
 
 #Numbers for Root and Widgets---------------------
 rootWidth = 800
@@ -240,7 +283,7 @@ ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, re
 
 
 NextGameDayVar = StringVar()
-NextGameDayText = Message(root,textvariable=NextGameDayVar, width= int(buttonWidth), relief = FLAT)
+NextGameDayText = Message(root,textvariable=NextGameDayVar, width= int(buttonWidth), relief = FLAT, bg='lightgray', font=("Courier", 10))
 NextGameDaySetUp()
 
 

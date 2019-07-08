@@ -96,3 +96,50 @@ class DataCrawler:
                             
                     csv.write(rowGame)
                     counter += 1
+                    
+    
+    
+    def getNextSeason(self, Season):
+        i = Season
+        
+        csv = open(self.csvPath, "w")
+        csv.write("Date" + "," + "Season" + "," + "GameDay" +"," + "HomeTeam" + "," + "AwayTeam" + "\n")
+        
+        if(self.internet_on() == False):
+            raise Exception('You should check your internet connection, before you proceed')
+        
+        else:
+            
+            counter = 0
+            Game = {}
+                
+            Date = {}
+            Season = {}
+            GameDay = {}
+            HomeTeam = {}
+            AwayTeam = {}
+                
+            todos = json.loads(requests.get(f'http://www.openligadb.de/api/getmatchdata/bl1/{i}').text)
+        
+            for game in (todos):
+                Game[counter] = game
+                
+                for team in Game[counter]:
+                    Date[counter] = Game[counter]['MatchDateTime']
+                    Group = Game[counter]['Group']
+                    GameDay[counter] = Group['GroupOrderID']
+                        
+    
+                                      
+                    Team1 = Game[counter]['Team1']
+                    HomeTeam[counter] = Team1['TeamName']
+
+                    Team2 = Game[counter]['Team2']
+                    AwayTeam[counter] = Team2['TeamName']
+
+                            
+                rowGame = Date[counter]+","+str(i)+","+str(GameDay[counter])+","+ HomeTeam[counter] +  "," +  AwayTeam[counter] +"\n"
+                            
+                csv.write(rowGame)
+                counter += 1
+                    

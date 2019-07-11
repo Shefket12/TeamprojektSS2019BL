@@ -44,7 +44,7 @@ class ProbabilityAlgorithm:
         else:
             return False
         
-    def getResult(self,HomeTeam, GuestTeam, filename):
+    def getResult(self,HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
         
         if(self.matches == []):
             sys.stderr.write("No matches given to caluculate")
@@ -55,9 +55,13 @@ class ProbabilityAlgorithm:
             
             # Poisson regression, filename
             elif(self.algorithmIndex == 1):
-                
-                probabilities = [computeWinProbHome(self.matches, HomeTeam, GuestTeam, filename), computeWinProbAway(self.matches, HomeTeam, GuestTeam, filename), computeDraw(self.matches, HomeTeam, GuestTeam, filename)]
-                
+                try:
+                    probabilities = [computeWinProbHome(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday), 
+                    computeWinProbAway(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday), 
+                    computeDraw(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday)]
+                except:
+                    probabilities = [1.0/3, 1.0/3, 1.0/3]
+                                
             else:
                 sys.stderr.write("No algorithm given for the calculation")
             

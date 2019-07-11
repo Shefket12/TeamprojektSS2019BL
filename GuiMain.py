@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
-
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -28,7 +26,7 @@ def Crawler():
        
 def AlgorithmConfiguration():
     
-    InfoVar.set("Wählen Sie einen Algorithmus und den gewünschten Datensatz. Drücken Sie anschließend aus 'Bestätigen'")
+    InfoVar.set("Konfigurieren Sie die Berechnung und drücken die auf 'Bestätigen'")
     global AlgorithmConfigPopUp
     AlgorithmConfigPopUp = Toplevel()
     AlgorithmConfigPopUp.wm_title("Einstellungen")
@@ -113,6 +111,7 @@ def RunAlgorithmTraining(FirstSeason, LastSeason, FirstGameDay, LastGameDay, Alg
         InfoVar.set("Achtung! Sie haben keinen Algorithmus ausgewählt.")
         
     CalcAlgo.processData(CVS_Path, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    NextGameDaySetUp()
     
 def Calculate():
     
@@ -131,7 +130,6 @@ def Calculate():
                     imgHomeTeam.place(x=100, y=rootHeight/3)
                     
                     ResultVarHome.set(str(variableHome.get())+":\n"+ str(result[0]*100)+" %")
-                    
                     
                     imgGuestTeam.config(image = "")
                     loadGuestTeam = Image.open(f"Data/Logo/{str(variableGuest.get())}.gif")
@@ -168,6 +166,7 @@ def getNextGameDay():
     result = []
     gameday = 1
     now = datetime.datetime.now().isoformat()
+    #now = "2019-07-11T09:13:32.007347"
     #open the csv file
     with open(file) as csv_file:
         csv_reader = csv.reader(csv_file ,delimiter=',')
@@ -197,11 +196,22 @@ def getNextGameDay():
         
 def NextGameDaySetUp():
     gameday = getNextGameDay()
-    overall = "Kommender Spieltag:\n"
-    
-    for game in gameday:
-        overall = overall + game[0]+" vs. "+game[1]+"\n\n"
-    
+    overall = ""
+    if(CalcAlgo.algorithmIndex != -1):
+        
+        for game in gameday:
+            overall = overall + game[0]+" : "+game[1]+"\n"
+            result = CalcAlgo.getResult(game[0], game[1], CVS_Path)
+            home = str("{0:.2f}".format(result[0]*100.0))+"%"
+            guest = str("{0:.2f}".format(result[1]*100.0))+"%"
+            overall = overall +home+" : "+guest+"\n"
+            overall = overall +"\n"
+            
+    else:
+        for game in gameday:
+            overall = overall + game[0]+" : "+game[1]+"\n"
+            overall = overall +"\n\n"
+            
     NextGameDayVar.set(overall)
     
     return
@@ -211,8 +221,6 @@ def NextGameDaySetUp():
 root = Tk()
 root.title("Softwareprojekt Bundesliga")
 
-#img = Image("photo", file="./Data/Logo/Bundesliga.gif")
-#root.iconphoto(True, img) # you may also want to try this.
 loadimg = Image.open("Data/Logo/Bundesliga.gif")
 img = ImageTk.PhotoImage(loadimg)
 root.call('wm','iconphoto', root._w, img)
@@ -267,8 +275,6 @@ InfoVar = StringVar()
 InfoVar.set("Starten Sie den Crawler")
 InfoText = Message(root,textvariable = InfoVar, width= rootWidth, relief = "flat", fg = "red")
 
-
-
 ResultVarHome = StringVar()
 ResultVarHome.set("")
 ResultTextHome = Message(root,textvariable = ResultVarHome, width= rootWidth, relief = "flat")
@@ -282,8 +288,17 @@ ResultVarDraw.set("")
 ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, relief = "flat")
 
 
+
+#Next Game Day -------------
+Box = Frame(root, bg= "grey95", height = rootHeight - buttonHeight-35, width = buttonWidth)
+
+NextGameDayHeadVar = StringVar()
+NextGameDayHead = Message(Box ,textvariable=NextGameDayHeadVar, bg = "grey95",width= int(buttonWidth), relief = FLAT)
+NextGameDayHeadVar.set("Kommender Spieltag")
+
+
 NextGameDayVar = StringVar()
-NextGameDayText = Message(root,textvariable=NextGameDayVar, width= int(buttonWidth), relief = FLAT, bg='lightgray', font=("Courier", 10))
+NextGameDayText = Message(Box ,textvariable=NextGameDayVar, bg = "grey95",width= int(buttonWidth), relief = FLAT, font = ('TkDefaultFont', 10))
 NextGameDaySetUp()
 
 
@@ -305,6 +320,9 @@ ResultTextHome.pack()
 ResultTextGuest.pack()
 ResultTextDraw.pack()
 NextGameDayText.pack()
+NextGameDayHead.pack()
+Box.pack()
+
 
 #Place Widgets---------------------
 
@@ -325,7 +343,8 @@ InfoText.place(x = 0, y = rootHeight-30)
 ResultTextHome.place(x = 50, y = rootHeight/3+50)
 ResultTextGuest.place(x = buttonWidth+50, y = rootHeight/3+50)
 ResultTextDraw.place(x = rootWidth/4, y = rootHeight/2+50)
-NextGameDayText.place(x = 2*buttonWidth, y = buttonHeight)
-
+Box.place(x = 2*buttonWidth, y= buttonHeight)
+NextGameDayHead.place(x = 60, y = 0)
+NextGameDayText.place(x = 0, y = 35)
 #Start Mainloop of the Root---------------------
 root.mainloop()

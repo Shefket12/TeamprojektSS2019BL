@@ -1,12 +1,11 @@
-
 # !/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
-
 
 import sys
 from Algorithm.parse_csv_data import parse
 from Algorithm.base_probability import*
 from Algorithm.poisson_algo import *
+from Data.TeamIdentification import *
 import pandas as pd
 import numpy as np
 from scipy.stats import poisson
@@ -23,17 +22,27 @@ class ProbabilityAlgorithm:
     def __init__(self):
         self.matches = []
         self.algorithmIndex = -1
+        self.FirstSeason = 2009
+        self.LastSeason = 2018
+        self.FirstGameDay = 1
+        self.LastGameDay = 34
     
     def setAlgorithm(self, index):
         self.algorithmIndex = index
+    
+    def setSeasons(self, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
+        self.FirstSeason = FirstSeason
+        self.LastSeason = LastSeason
+        self.FirstGameDay = FirstGameDay
+        self.LastGameDay = LastGameDay
         
     
     def printData(self):
         for i in self.matches:
             print(i)
        
-    def processData(self, filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
-        self.matches = parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    def processData(self, filename):
+        self.matches = parse(filename, self.FirstSeason, self.LastSeason, self.FirstGameDay, self.LastGameDay)
         
     def deleteData(self):
         self.matches = []
@@ -44,21 +53,21 @@ class ProbabilityAlgorithm:
         else:
             return False
         
-    def getResult(self,HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    def getResult(self,HomeTeam, GuestTeam, filename):
         
         if(self.matches == []):
             sys.stderr.write("No matches given to caluculate")
         else:
             # Basis algorithm:
             if(self.algorithmIndex == 0):
-                probabilities = [get_probability_hometeam_wins(self.matches, HomeTeam, GuestTeam), get_probability_external_team_wins(self.matches, HomeTeam, GuestTeam), get_probability_draw(self.matches, HomeTeam, GuestTeam)]
+                probabilities = [get_probability_hometeam_wins(self.matches, get_TeamID(HomeTeam), get_TeamID(GuestTeam)), get_probability_external_team_wins(self.matches, get_TeamID(HomeTeam), get_TeamID(GuestTeam)), get_probability_draw(self.matches, get_TeamID(HomeTeam), get_TeamID(GuestTeam))]
             
             # Poisson regression, filename
             elif(self.algorithmIndex == 1):
                 try:
-                    probabilities = [computeWinProbHome(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday), 
-                    computeWinProbAway(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday), 
-                    computeDraw(self.matches, HomeTeam, GuestTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday)]
+                    probabilities = [computeWinProbHome(HomeTeam, GuestTeam, filename, self.FirstSeason, self.FirstGameDay, self.LastSeason, self.LastGameDay), 
+                    computeWinProbAway(HomeTeam, GuestTeam, filename, self.FirstSeason, self.FirstGameDay, self.LastSeason, self.LastGameDay), 
+                    computeDraw(HomeTeam, GuestTeam, filename, self.FirstSeason, self.FirstGameDay, self.LastSeason, self.LastGameDay)]
                 except:
                     probabilities = [1.0/3, 1.0/3, 1.0/3]
                                 

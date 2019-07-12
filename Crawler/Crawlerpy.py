@@ -66,10 +66,10 @@ class DataCrawler:
     
                                       
                         Team1 = Game[counter]['Team1']
-                        HomeTeam[counter] = Team1['TeamName']
+                        HomeTeam[counter] = Team1['TeamId']
 
                         Team2 = Game[counter]['Team2']
-                        AwayTeam[counter] = Team2['TeamName']
+                        AwayTeam[counter] = Team2['TeamId']
 
                                     #Safe scored goals by team, by going through the list
                                     #check, if the finalscore is in Matchresults[0] or Matchresults[1]
@@ -92,7 +92,7 @@ class DataCrawler:
                             GoalsHome[counter] = Result['PointsTeam1']
                             GoalsAway[counter] = Result['PointsTeam2']
                             
-                    rowGame = Date[counter]+","+str(i)+","+str(GameDay[counter])+","+ HomeTeam[counter] +  "," +  AwayTeam[counter] +  "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
+                    rowGame = Date[counter]+","+str(i)+","+str(GameDay[counter])+","+ str(HomeTeam[counter]) +  "," +  str(AwayTeam[counter]) +  "," +str(GoalsHome[counter]) + "," + str(GoalsAway[counter]) +"\n"
                             
                     csv.write(rowGame)
                     counter += 1

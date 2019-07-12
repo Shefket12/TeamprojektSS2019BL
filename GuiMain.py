@@ -34,6 +34,7 @@ def AlgorithmConfiguration():
     AlgorithmConfigPopUp.grid_rowconfigure(10, minsize=100)
     AlgorithmConfigPopUp.resizable(width = False, height = False)
     
+    
     firstSeason = StringVar()
     lastSeason = StringVar()
     firstGameDay = StringVar()
@@ -50,7 +51,7 @@ def AlgorithmConfiguration():
     #Entry First Season
     entryFirstSeason = Entry(AlgorithmConfigPopUp, width = 6, textvariable= firstSeason)
     entryFirstSeason.grid(row=1, column = 1, sticky=W)
-    entryFirstSeason.insert(0, "2012")
+    entryFirstSeason.insert(0, "2009")
     
     Label(AlgorithmConfigPopUp, text="bis").grid(row=1, column = 2, sticky=W)
     
@@ -109,8 +110,9 @@ def RunAlgorithmTraining(FirstSeason, LastSeason, FirstGameDay, LastGameDay, Alg
         InfoVar.set("Wählen Sie die Mannschaften für die Berechnung aus")
     else:
         InfoVar.set("Achtung! Sie haben keinen Algorithmus ausgewählt.")
-        
-    CalcAlgo.processData(CVS_Path, FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    
+    CalcAlgo.setSeasons(FirstSeason, LastSeason, FirstGameDay, LastGameDay)
+    CalcAlgo.processData(CVS_Path)
     NextGameDaySetUp()
     
 def Calculate():
@@ -123,7 +125,7 @@ def Calculate():
                     
                     result = CalcAlgo.getResult(str(variableHome.get()), str(variableGuest.get()), CVS_Path)
                     imgHomeTeam.config(image = "")
-                    loadHomeTeam = Image.open(f"Data/Logo/{str(variableHome.get())}.gif")
+                    loadHomeTeam = Image.open(f"Data/Logos/{str(variableHome.get())}.gif")
                     renderHomeTeam = ImageTk.PhotoImage(loadHomeTeam)
                     imgHomeTeam.config(image=renderHomeTeam)
                     imgHomeTeam.image = renderHomeTeam
@@ -132,7 +134,7 @@ def Calculate():
                     ResultVarHome.set(str(variableHome.get())+":\n"+ str(result[0]*100)+" %")
                     
                     imgGuestTeam.config(image = "")
-                    loadGuestTeam = Image.open(f"Data/Logo/{str(variableGuest.get())}.gif")
+                    loadGuestTeam = Image.open(f"Data/Logos/{str(variableGuest.get())}.gif")
                     renderGuestTeam = ImageTk.PhotoImage(loadGuestTeam)
                     imgGuestTeam.config(image=renderGuestTeam)
                     imgGuestTeam.image = renderGuestTeam
@@ -185,8 +187,8 @@ def getNextGameDay():
                 gameday += 1
                 continue
             
-            home_team = str(row[3])
-            external_team = str(row[4])
+            home_team = int(row[3])
+            external_team = int(row[4])
             match = [home_team, external_team]
             
             result.append(match)
@@ -200,8 +202,9 @@ def NextGameDaySetUp():
     if(CalcAlgo.algorithmIndex != -1):
         
         for game in gameday:
-            overall = overall + game[0]+" : "+game[1]+"\n"
-            result = CalcAlgo.getResult(game[0], game[1], CVS_Path)
+            
+            overall = overall + get_TeamName(game[0])+" : "+get_TeamName(game[1])+"\n"
+            result = CalcAlgo.getResult(get_TeamName(game[0]), get_TeamName(game[1]), CVS_Path)
             home = str("{0:.2f}".format(result[0]*100.0))+"%"
             guest = str("{0:.2f}".format(result[1]*100.0))+"%"
             overall = overall +home+" : "+guest+"\n"
@@ -209,7 +212,7 @@ def NextGameDaySetUp():
             
     else:
         for game in gameday:
-            overall = overall + game[0]+" : "+game[1]+"\n"
+            overall = overall + get_TeamName(game[0])+" : "+get_TeamName(game[1])+"\n"
             overall = overall +"\n\n"
             
     NextGameDayVar.set(overall)
@@ -221,7 +224,7 @@ def NextGameDaySetUp():
 root = Tk()
 root.title("Softwareprojekt Bundesliga")
 
-loadimg = Image.open("Data/Logo/Bundesliga.gif")
+loadimg = Image.open("Data/Logos/Bundesliga.gif")
 img = ImageTk.PhotoImage(loadimg)
 root.call('wm','iconphoto', root._w, img)
 
@@ -289,7 +292,7 @@ ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, re
 
 
 
-#Next Game Day -------------
+#NextGameDays -------------
 Box = Frame(root, bg= "grey95", height = rootHeight - buttonHeight-35, width = buttonWidth)
 
 NextGameDayHeadVar = StringVar()

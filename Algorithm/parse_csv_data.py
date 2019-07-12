@@ -26,12 +26,12 @@ def parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
             game_day = int(row[2])
             
             #Check for "Dataselection"
-            if(FirstSeason <= season_year and LastSeason >= season_year and FirstGameDay <= game_day and LastGameDay >= game_day):
+            if(inRange( season_year, game_day ,FirstSeason, LastSeason, FirstGameDay, LastGameDay)):
             
                 #extract the information stored in the csv
                 date = date_parser.parse(row[0])
-                home_team = str(row[3])
-                external_team = str(row[4])
+                home_team = int(row[3])
+                external_team = int(row[4])
                 home_score = int(row[5])
                 external_score = int(row[6])
                 #create a match object, containing the match information
@@ -39,3 +39,17 @@ def parse(filename, FirstSeason, LastSeason, FirstGameDay, LastGameDay):
                 result.append(match)
                 
     return result
+
+
+
+def inRange(NowSeason, NowGameDay ,FirstSeason, LastSeason, FirstGameDay, LastGameDay):
+    if(FirstSeason < NowSeason and NowSeason <LastSeason):
+        return True
+    elif(FirstSeason == NowSeason):
+        return FirstGameDay <= NowGameDay
+    elif(LastSeason == NowSeason):
+        return NowGameDay <= LastGameDay 
+    else: 
+        return False
+  
+ 

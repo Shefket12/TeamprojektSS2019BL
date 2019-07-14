@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -276,19 +273,19 @@ dropdownGuest = OptionMenu(root, variableGuest,"FC Augsburg", "Hertha BSC", "Wer
 #Text
 InfoVar = StringVar()
 InfoVar.set("Starten Sie den Crawler")
-InfoText = Message(root,textvariable = InfoVar, width= rootWidth, relief = "flat", fg = "red")
+InfoText = Message(root,textvariable = InfoVar, width= rootWidth, relief = "flat", fg = "red", bg = "white")
 
 ResultVarHome = StringVar()
 ResultVarHome.set("")
-ResultTextHome = Message(root,textvariable = ResultVarHome, width= rootWidth, relief = "flat")
+ResultTextHome = Message(root,textvariable = ResultVarHome, width= rootWidth, relief = "flat", bg = "white")
 
 ResultVarGuest = StringVar()
 ResultVarGuest.set("")
-ResultTextGuest = Message(root,textvariable = ResultVarGuest, width= rootWidth, relief = "flat")
+ResultTextGuest = Message(root,textvariable = ResultVarGuest, width= rootWidth, relief = "flat", bg = "white")
 
 ResultVarDraw = StringVar()
 ResultVarDraw.set("")
-ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, relief = "flat")
+ResultTextDraw = Message(root,textvariable = ResultVarDraw, width= rootWidth, relief = "flat", bg = "white")
 
 
 

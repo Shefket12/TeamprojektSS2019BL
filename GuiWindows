@@ -165,8 +165,7 @@ def getNextGameDay():
     NSCrawler.getNextSeason(2019)
     result = []
     gameday = 1
-    #now = datetime.datetime.now().isoformat()
-    now = "2019-10-11T09:13:32.007347"
+    now = datetime.datetime.now().isoformat()
     #open the csv file
     with open(file) as csv_file:
         csv_reader = csv.reader(csv_file ,delimiter=',')

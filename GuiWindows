@@ -7,7 +7,7 @@
 from Crawler.Crawlerpy import *
 from Data.TeamIdentification import *
 from tkinter import*
-from Algorithm.ProbabilityAlgorithm import *
+from Algorithm.AlgorithmInterface import *
 from PIL import ImageTk, Image
 import datetime
 import os
@@ -247,7 +247,7 @@ dropdownWidth = rootWidth/3
 
 CVS_Path = "Data/BundesligaData.csv" 
 
-CalcAlgo = ProbabilityAlgorithm()
+CalcAlgo = AlgorithmInterface()
 BLCrawler = DataCrawler(CVS_Path)
 
 imgHomeTeam = Label(root)

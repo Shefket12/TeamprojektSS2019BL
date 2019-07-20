@@ -8,8 +8,6 @@ Summary:
 2. Graphical User Interface(GUI)
 3. Algortihm
 
-
-
 1. CRAWLER
 The crawler has two main functions: 
   1. To crawl the wanted data from past games and write it into a csv-file
@@ -25,11 +23,9 @@ The Crawler-class has another two methods, which are shortly explained:
 'internet_on' is a boolean methods, which checks, if there is a working internet connection. Because of this, the methods 'getSeasons' and 'getNextSeason' throw an exception, if 'internet_on' returns the value false, which states: 'You should check your internet connection, before you proceed'.
 
 2. GUI
-
 The Graphical User Interface combines all classes and data and handles all inputs. The GUI has five buttons(these are mostly stated in german, because it was a german group tp the develop the program and it is applied for the german Bundesliga): 'Crawler', 'Einstellungen', 'Berechnung', 'Heim' and 'Gast'.
 Here a closer definition of what those buttons do:
 1.Crawler:
-
   The Crawler starts the method 'getSeasons' in the class Crawler. This means, this button will trigger the method, which will 'crawl     all the data of the previous Bundesliga seasons and write it into the csv-file 'BundesligaData'.
 2.Einstellungen:
   In 'Einstellungen' you can choose the data from which the probabilities will be calculated and also which algorithm will be used. In     particular this means, that you set four parameters(Firstseason, Lastseason, Firstmatchday, Lastmatchday) to a certain range. This       range will then be used in the calculations(Note, that the csv-file will not be changed! The code uses an Array with the selected       data). Also keep in mind to use valid input. The code won't work with chars or strings as input, but will with invalid integers as       input.

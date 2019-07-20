@@ -14,7 +14,7 @@ import statsmodels.formula.api as smf
 import csv
 from Data.writeTeamIDs import *
 
-class ProbabilityAlgorithm:
+class AlgorithmInterface:
     
     #every Algorithm has an index
     #base algorithm = 0

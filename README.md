@@ -6,7 +6,7 @@ This Project uses online Data to project probabilities for the different outcome
 Summary:
 1. Crawler
 2. Graphical User Interface(GUI)
-3. Algortihm
+3. Algortihm\\
 
 1. CRAWLER
 The crawler has two main functions: 

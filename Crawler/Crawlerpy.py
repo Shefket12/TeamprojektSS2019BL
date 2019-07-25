@@ -139,7 +139,7 @@ class DataCrawler:
             todos = json.loads(requests.get(f'http://www.openligadb.de/api/getmatchdata/bl1/{i}').text)
         
             for game in (todos):
-                Game[counter] = Game
+                Game[counter] = game
                 
                 for team in Game[counter]:
                     Date[counter] = Game[counter]['MatchDateTime']

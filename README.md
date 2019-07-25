@@ -1,6 +1,6 @@
 # Teamprojekt
 
-#In General:
+# In General:
 This Project uses online Data to project probabilities for the different outcomes of a football(soccer) match between two teams. Our project is applied for the '1.Bundesliga' in germany.
 
 # Summary:

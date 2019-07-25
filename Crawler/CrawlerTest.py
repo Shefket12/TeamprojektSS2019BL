@@ -25,9 +25,9 @@ class CrawlerTest:
     #checking, if the internet-connection is working, seperately
     def checkInternet(self):
         if(self.Crawler.internet_on()==True):
-                print("Internet funktionert")
+                print("Internet connection works")
         else:
-            print("Gerät ist nicht mit dem Internet verbunden")
+            print("Check your internet connection")
     
         
     #writing the fetched games into a CSVFile

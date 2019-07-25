@@ -47,24 +47,21 @@ The folder 'Algorithm' has five classes. One for each algorithm, two to parse th
 The classes 'match' and 'parse_csv_data' are used to parse the data from the csv-file to a useable array in the program.
 In '2.Gui/2.Einstellungen' the procedure of both algorithm was already explained, no need to do this here again.
 With the class 'ProbabilityAlgorithm' the GUI has different tools to work with the data and handle the input. With 'setAlgorithm' it can differenciate between the two algorithms. 'setSeasons' uses the four parameters from 'Einstellungen' to set the range of selected data. 'processData' parses the csv-file into an array, using the 'parse_csv_data' and 'match' class. The methods 'printData', 'deleteData' and 'hasMatches' are self explanatory.
-The main method of this class is the 'getResult'-method. It checks, which algorithm should be used for the calculation and then gives the data to the corresponding algorithm.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The main method of this class is the 'getResult'-method. It checks, which algorithm should be used for the calculation and then gives the data to the corresponding algorithm.<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 Footnote: For the sophisticated people who are using Apple, there is an extra GUIMacOS version

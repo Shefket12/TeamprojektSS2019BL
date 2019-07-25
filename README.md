@@ -18,7 +18,7 @@ All these informations will then be written in to a csv-file line by line, calle
 
 'getNextSeason' has the same modularity as 'getSeasons' but with two differences: 
   1. If only crawls games for one season. 
-  2. It doesn't fetch any scores. <br\>
+  2. It doesn't fetch any scores. <br/>
 This method has these two important differences, because it is used to crawl games, which haven't been played yet. The games which will be crawled in this method will be written into an extra csv-file in the folder 'Data', called 'nextSeason'. 
 
 The Crawler-class has another two methods, which are shortly explained: 

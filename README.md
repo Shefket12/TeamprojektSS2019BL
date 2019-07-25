@@ -16,7 +16,10 @@ The crawler has two main functions:
 The method 'getSeasons' uses the parameters 'FirstSeason' and 'LastSeason' as a range, for the seasons which should be fetched. The method turns to the page 'openligadb.de' with the given parameters and selects the following data from the games within the range between 'FirstSeason' and 'LastSeason': Date, Season, Matchday, HometeamID, AwayteamID, Hometeamscore and Awayteamscore.
 All these informations will then be written in to a csv-file line by line, called 'BundesligaData'. This file can be found in the folder 'Data'
 
-'getNextSeason' has the same modularity as 'getSeasons' but with two differences: 1. If only crawls games for one season. 2. It doesn't fetch any scores. This method has these two important differences, because it is used to crawl games, which haven't been played yet. The games which will be crawled in this method will be written into an extra csv-file in the folder 'Data', called 'nextSeason'. 
+'getNextSeason' has the same modularity as 'getSeasons' but with two differences: 
+  1. If only crawls games for one season. 
+  2. It doesn't fetch any scores. 
+This method has these two important differences, because it is used to crawl games, which haven't been played yet. The games which will be crawled in this method will be written into an extra csv-file in the folder 'Data', called 'nextSeason'. 
 
 The Crawler-class has another two methods, which are shortly explained: 
 'clear' is just a method to delet all the data in the csv-file 'BundesligaData'.
@@ -38,7 +41,7 @@ Here a closer definition of what those buttons do:
   With these buttons you choose between the current 18 Bundesligateams and determine, which will be home and which will be away, since     this plays a big part in football. Beware that you can not choose the same team as home and away at the same time! The GUI will tell     you to choose different teams. If you do choose the same teams nothing happens.
 On the right hand side of the GUI you can see the upcoming matchday and the probabilities, based on the chosen data and algorithm. 
 
-# 3. ALGORTIHM
+# 3. ALGORITHM
 The folder 'Algorithm' has five classes. One for each algorithm, two to parse the csv-file and one for the GUI to process the data.
 The classes 'match' and 'parse_csv_data' are used to parse the data from the csv-file to a useable array in the program.
 In '2.Gui/2.Einstellungen' the procedure of both algorithm was already explained, no need to do this here again.

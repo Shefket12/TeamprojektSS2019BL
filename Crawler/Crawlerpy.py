@@ -9,12 +9,18 @@ except:
 class DataCrawler:
 
     def __init__(self, csvPath):
+    	"""Initialize instance of DataCrawler
+
+    	csvPath to where csv-file will be saved"""
         self.csvPath = csvPath
         
         
     #method, to check the internet-connection, returning True and False as resulst
     #only the HEAD and no HTML will be fetched
     def internet_on(self):
+    	"""Check the internet-connection
+
+    	returns boolean-values; 'False'==no connection, 'True'==connection works"""
         conn = httplib.HTTPConnection("www.ecosia.com", timeout=5)
         try:
             conn.request("HEAD", "/")
@@ -25,11 +31,18 @@ class DataCrawler:
             return False
     
     def clear(self):
+    	"""Delete all values in the csv-file
+
+    	"""
         csv = open(self.csvPath, "w")
         
         
                         
     def getSeasons(self, FirstSeason, LastSeason):
+    	"""Crawls the data for each team and game, using the website 'openligadb' and writes it into a csv-file
+
+    	'FirstSeason' and 'LastSeason' must be integers and it must be: 'FirstSeason' > 'LastSeason'
+    	The data consist of the date, the home and away team and the score for each team"""
         csv = open(self.csvPath, "w")
         csv.write("Date" + "," + "Season" + "," + "GameDay" +"," + "HomeTeam" + "," + "AwayTeam" + "," + "GoalsHome" + "," + "GoalsAway" + "\n")
         if(self.internet_on() == False):
@@ -100,6 +113,10 @@ class DataCrawler:
     
     
     def getNextSeason(self, Season):
+    	"""Crawls the data for each game, using the website 'openligadb' and writes it into a csv-file
+
+    	'Season' must be an integer
+    	The data consist of the date and the home and away team"""
         i = Season
         
         csv = open(self.csvPath, "w")
@@ -122,7 +139,7 @@ class DataCrawler:
             todos = json.loads(requests.get(f'http://www.openligadb.de/api/getmatchdata/bl1/{i}').text)
         
             for game in (todos):
-                Game[counter] = game
+                Game[counter] = Game
                 
                 for team in Game[counter]:
                     Date[counter] = Game[counter]['MatchDateTime']

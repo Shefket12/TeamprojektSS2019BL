@@ -6,7 +6,7 @@ This Project uses online Data to project probabilities for the different outcome
 # Summary:
 ## 1. Crawler
 ## 2. Graphical User Interface(GUI)
-## 3. Algortihm
+## 3. AlgortihmInterface
 
 # 1. CRAWLER
 The crawler has two main functions: 
@@ -42,7 +42,7 @@ Here a closer definition of what those buttons do:
   With these buttons you choose between the current 18 Bundesligateams and determine, which will be home and which will be away, since     this plays a big part in football. Beware that you can not choose the same team as home and away at the same time! The GUI will tell     you to choose different teams. If you do choose the same teams nothing happens.
 On the right hand side of the GUI you can see the upcoming matchday and the probabilities, based on the chosen data and algorithm. 
 
-# 3. ALGORITHM
+# 3. ALGORITHMINTERFACE
 The folder 'Algorithm' has five classes. One for each algorithm, two to parse the csv-file and one for the GUI to process the data.
 The classes 'match' and 'parse_csv_data' are used to parse the data from the csv-file to a useable array in the program.
 In '2.Gui/2.Einstellungen' the procedure of both algorithm was already explained, no need to do this here again.

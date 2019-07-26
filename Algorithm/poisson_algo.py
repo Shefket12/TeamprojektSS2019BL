@@ -9,8 +9,11 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import csv
 
-#replace the IDs of each team with their actual name, for pandas
 def replaceIDs(dataframe):
+    """Replace the IDs in the dataframe with the actual teamnames
+
+    Uses a csv-file, to exchange the IDs correctly
+    'dataframe' must be a pandas dataframe"""
     teamIDs = "Data\\TeamIDs.csv"
     with open(teamIDs) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')            
@@ -19,8 +22,12 @@ def replaceIDs(dataframe):
             dataframe['AwayTeam'].replace(int(row[0]), row[1],inplace=True)
 
 
-# compute tetas for both teams for poisson regression
 def computeTeta(filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    """Fitting the data to the poisson model
+
+    Computing tetas for each team for home and away and storing them in an array
+    'filename' must be a string
+    'firstYear', 'firstMatchday', 'lastYear' and 'lastMatchday' must be integers"""
     data = pd.read_csv(filename)
     start = ((firstYear-2009)*306 + (firstMatchday-1)*9)
     end = (3060 - ((2018-lastYear)*306 + (34-lastMatchday)*9))
@@ -35,8 +42,12 @@ def computeTeta(filename, firstYear, firstMatchday, lastYear, lastMatchday):
     poisson_model = smf.glm(formula='Goals ~ Home + Team + Opponent', data=goal_model_data, family=sm.families.Poisson()).fit()
     return poisson_model
 
-# computes and Array with the probabilities for different scores between two given teams, i.e. Bayern 3-1 BVB 5,39%
 def simulateMatch(homeTeam, awayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    """Computing the probabilities in a given match
+
+    Computes the probabilities for a certain score between two teams
+    'homeTeam', 'awayTeam' and 'filename' must be strings
+    'firstYear', 'firstMatchday', 'lastYear' and 'lastMatchday' must be integers"""
     max_goals=10
     poisson_model = computeTeta(filename, firstYear, firstMatchday, lastYear, lastMatchday)
     home_goals_avg = poisson_model.predict(pd.DataFrame(data={'Team': homeTeam, 
@@ -50,16 +61,28 @@ def simulateMatch(homeTeam, awayTeam, filename, firstYear, firstMatchday, lastYe
 
 # these methods are the same, just with different returns. Give out the probabilit for a team to win or a draw between the teams
 def computeWinProbHome(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    """Computes the Probability, that 'HomeTeam' wins
+
+    'HomeTeam', 'AwayTeam' and 'filename' must be strings
+    'firstYear', 'firstMatchday', 'lastYear' and 'lastMatchday' must be integers"""
     game = simulateMatch(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday)
     winHome = np.sum(np.tril(game, -1))
     return winHome
 
 def computeWinProbAway(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    """Computes the Probability, that 'HomeTeam' wins
+
+    'HomeTeam', 'AwayTeam' and 'filename' must be strings
+    'firstYear', 'firstMatchday', 'lastYear' and 'lastMatchday' must be integers"""
     game = simulateMatch(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday)
     winAway = np.sum(np.triu(game, 1))
     return winAway
 
 def computeDraw(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday):
+    """Computes the Probability, that the teams draw
+
+    'HomeTeam', 'AwayTeam' and 'filename' must be strings
+    'firstYear', 'firstMatchday', 'lastYear' and 'lastMatchday' must be integers"""
     game = simulateMatch(HomeTeam, AwayTeam, filename, firstYear, firstMatchday, lastYear, lastMatchday)
     draw = np.sum(np.diag(game))
     return draw

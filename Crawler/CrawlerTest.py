@@ -10,30 +10,35 @@ import csv
 
 class CrawlerTest:
         
-    #creating a new Datacrawler
     def __init__(self, file, FirstSeason, LastSeason):
+        """Create a instance to test the Crawler
+
+        'file' must be a valid path on your computer, 'FirstSeason' and 'LastSeason' must be integers with
+        'FirstSeason' >= 'LastSeason'"""
         self.filename = file
         self.Crawler = DataCrawler(self.filename)
         self.FirstSeason = FirstSeason
         self.LastSeason = LastSeason
         self.Crawler.getSeasons(self.FirstSeason, self.LastSeason)
     
-    #variables for the matchdays(FirstMatchday, LastMatchday)
     
 
-    
-    #checking, if the internet-connection is working, seperately
     def checkInternet(self):
+        """checks 'internet_on' method
+
+        returns information, if device is connected to internet or not"""
         if(self.Crawler.internet_on()==True):
                 print("Internet connection works")
         else:
             print("Check your internet connection")
     
         
-    #writing the fetched games into a CSVFile
-    
-    #checking the number of games(if all desired games are written in the CSV-file)
     def checkNumOfGames(self):
+        """Checks, if number of games is correct
+
+        Counts how many games are in the csv-file and calculates, with 'FirstSeason' 
+        and 'LastSeason' if the count equals a calculated number.
+        If not, it returns, if there are too many or too few games"""
         counter = 0
         numOfGames = 0
         with open(self.filename)as csv_file:
@@ -44,7 +49,7 @@ class CrawlerTest:
                 counter += 1
                 
             numOfGames = ((self.LastSeason+1)-self.FirstSeason) * 34 * 9
-            #first row isnt a Game
+            #first row isn't a Game
             counter -= 1
             
         if(numOfGames == counter):
@@ -55,26 +60,11 @@ class CrawlerTest:
             print("There are too many games in the csv file")
 
 
-# In[2]:
+#A way to use the Testclass
+"""
+from Crawler.CrawlerTest import *
 
-
-Test = CrawlerTest("Data/BundesligaTest.csv", 2011,2018)
-
-
-# In[3]:
-
-
+Test = CrawlerTest("Data/BundesligaTest.csv", 2008,2018)
 Test.checkInternet()
-
-
-# In[4]:
-
-
 Test.checkNumOfGames()
-
-
-# In[ ]:
-
-
-
-
+"""

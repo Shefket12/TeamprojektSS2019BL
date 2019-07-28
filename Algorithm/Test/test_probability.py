@@ -11,7 +11,11 @@ data = "../example_data/BuliDaten.csv"
 class TestProbabilities(unittest.TestCase):
 
     def setUp(self):
-        # get the matches from the dataset
+        """ get the matches from the dataset
+
+        :return:
+        """
+
         self.matches = parse(data)
 
         # create a set of all clubs contained in the dataset
@@ -21,7 +25,11 @@ class TestProbabilities(unittest.TestCase):
             self.clubs.add(match.external_team)
 
     def test_probabilities_sum1(self):
-        # iterate over all clubs
+        """ iterate over all clubs
+
+        :return:
+        """
+
         for club in self.clubs:
 
             # copy all clubs as opponents and remove the actual investigated club
@@ -39,6 +47,10 @@ class TestProbabilities(unittest.TestCase):
                 self.assertEqual(1.0,  p, 'incorrect probability')
 
     def test_probabilities_empty_playlist(self):
+        """
+
+        :return:
+        """
         emptyMatches = set()
         # iterate over all clubs
         for club in self.clubs:
@@ -57,6 +69,10 @@ class TestProbabilities(unittest.TestCase):
                 self.assertEqual(1.0 / 3, p_external_team, 'incorrect probability')
 
     def test_probabilities_unknown_club(self):
+        """
+
+        :return:
+        """
         # iterate over all clubs
         for club in self.clubs:
             unknown_club = "unknown"

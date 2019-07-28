@@ -1,6 +1,13 @@
 
-#return only the matches, where home_team and external_team played in the same constellation
 def __find_relevant_matches(matches, home_team, external_team):
+    """ return only the matches, where home_team and external_team played in the same constellation
+
+
+    :param matches:
+    :param home_team:
+    :param external_team:
+    :return:
+    """
     result = []
     for match in matches:
         if((match.external_team == external_team) and (match.home_team == home_team)):
@@ -8,10 +15,18 @@ def __find_relevant_matches(matches, home_team, external_team):
     return result
 
 
-# calulates the probabilitys for the possible match outputs, based on:
-# taking only games into account, where the external team and home team was playing in the same constellation
-# so home team is identical to the home team to evaluate aswell as the external team
+
 def get_probabilitys(matches, home_team, external_team):
+    """
+    calulates the probabilitys for the possible match outputs, based on:
+        taking only games into account, where the external team and home team was playing in the same constellation
+        so home team is identical to the home team to evaluate aswell as the external team
+
+    :param matches:
+    :param home_team:
+    :param external_team:
+    :return:
+    """
     # get only the relevant matches, where home_team and external_team played
     relevant_matches = __find_relevant_matches(matches, home_team, external_team)
 
@@ -43,19 +58,40 @@ def get_probabilitys(matches, home_team, external_team):
         return result
 
 
-# calculates the probability for the home team to win
 def get_probability_hometeam_wins(matches, home_team, external_team):
+    """ calculates the probability for the home team to win
+
+
+    :param matches:
+    :param home_team:
+    :param external_team:
+    :return:
+    """
     probabilities = get_probabilitys(matches, home_team, external_team)
     return probabilities["home_team"]
 
 
-# calculates the probability for the external team to win
 def get_probability_external_team_wins(matches, home_team, external_team):
+    """ calculates the probability for the external team to win
+
+
+    :param matches:
+    :param home_team:
+    :param external_team:
+    :return:
+    """
     probabilities = get_probabilitys(matches, home_team, external_team)
     return probabilities["external_team"]
 
 
-# calulates the probability for a draw match
+
 def get_probability_draw(matches, home_team, external_team):
+    """  calulates the probability for a draw match
+
+    :param matches:
+    :param home_team:
+    :param external_team:
+    :return:
+    """
     probabilities = get_probabilitys(matches, home_team, external_team)
     return probabilities["draw"]
